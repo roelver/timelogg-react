@@ -11,7 +11,8 @@ const adjustOverlaps = async (leadingDaylog) => {
                     let dayloglength = daylog.logs.length;
                     let i = 0;
                     while (i < dayloglength) {
-                        leadingDaylog.logs.forEach((leader) => {
+                        for ( let j = 0; j < leadingDaylog.logs.length; j++) {
+                            const leader = leadingDaylog.logs[j];
                             // Split?
                             if (daylog.logs[i].startTime < leader.startTime && daylog.logs[i].endTime > leader.endTime) {
                                 const clone = daylog.logs[i].toObject();
@@ -27,11 +28,11 @@ const adjustOverlaps = async (leadingDaylog) => {
                                     updated = true;
                                 }
                                 if (daylog.logs[i].endTime >= leader.startTime && daylog.logs[i].endTime <= leader.endTime) {
-                                        daylog.logs[i].endTime = leader.startTime - 1;
-                                        updated = true;
+                                    daylog.logs[i].endTime = leader.startTime - 1;
+                                    updated = true;
                                 }
-                            }                        
-                        });
+                            }     
+                        }
                         if (daylog.logs[i].endTime < daylog.logs[i].startTime) {
                             daylog.logs.splice(i,1);
                             dayloglength--;

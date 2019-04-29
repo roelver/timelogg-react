@@ -1,23 +1,6 @@
-const express = require('express');
+import React from 'react';
+import ReactDOM from 'react-dom';
+import './index.css';
+import App from './App';
 
-require('./db/mongoose');
-
-const userRouter = require('./routers/user');
-const daylogRouter = require('./routers/daylog');
-
-const app = express();
-const port = process.env.PORT || 3000;
-
-// define middleware method
-app.use((req, res, next) => {
-    console.log(req.method, req.path);
-    next();
-});
-
-app.use(express.json());
-app.use(userRouter);
-app.use(daylogRouter);
-
-app.listen(port, () => {
-    console.log('Server is listening to port', port);
-});
+ReactDOM.render(<App />, document.getElementById('root'));
