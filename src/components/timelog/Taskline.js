@@ -1,48 +1,56 @@
-import React from 'react';
+import React, {useState } from 'react';
+
+import { useStateValue } from '../../util/context';
+import { today } from '../../util/helper';
+import { stopRunning, apiError } from '../../state/apiActions';
 
 import Taskform from './Taskform';
 
-const Taskline = function(props) {
+const Taskline = function({ dlog, currentDate, starter }) {
 
-    const myTask = props.myTask;
+    const myTask = dlog.description;
+    const taskid = dlog._id;
+    const isToday = currentDate === today();
+ 
+    const [{ auth }, dispatch] = useStateValue();
     
-    const isToday = true;
-    const isRunning = false;
-    const isFormVisible = false;
+    const [isFormVisible, setIsFormVisible] = useState(false);
     
-    const startRunning = () => {
-        console.log('startRunning executed');        
+    const doToggleForm = () => {
+        setIsFormVisible(!isFormVisible);
     }
 
-    const stopRunning = () => {
-        console.log('stopRunning executed');                
+    const doStartRunning = () => {
+        starter(dlog);
     }
-        
-    const toggleForm = () => {
-        console.log('toggleForm executed');        
+
+    const doStopRunning = () => {
+        stopRunning(dlog, auth.token)
+            .then(action => dispatch(action))
+            .catch(error => dispatch(apiError(error)));
     }
-        
+
     return (
-        <tr className="tlbody" key={props.taskid}>
+        <tr className="tlbody" key={taskid}>
             <td className="startstop">
                 { isToday ? 
-                    isRunning ? 
-                        <span className="control" onClick={stopRunning}>
+                    dlog.isRunning ? 
+                        <span className="control" onClick={doStopRunning}>
                             <img src="img/pause.png" alt="Stop recording this task"/>
                         </span>
                         :
-                        <span className="control" onClick={startRunning}>
+                        <span className="control" onClick={doStartRunning}>
                             <img src="img/record.png" alt="Start recording this task"/>
                         </span>
                     : '' 
                 }
             </td>
             <td className="taskmenu">
-                <button className="btn btn-default menu" onClick={toggleForm}>
-                    <i className="glyphicon glyphicon-option-vertical"></i>
+                <button className="btn btn-light menu" onClick={doToggleForm}>
+                    <i className="fa fa-cog"></i>
                 </button>
                 { isFormVisible ? 
-                    <Taskform description={myTask}/>
+                    <Taskform dlog={dlog} close={doToggleForm}/>
                 : '' }
             </td>
             <td className="taskdesc">{myTask}</td>

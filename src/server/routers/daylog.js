@@ -54,17 +54,23 @@ router.get('/daylogs', auth, async (req, res) => {
 // Add log to existing table
 router.put('/daylogs/:id', auth, async (req, res) => {
     const daylogUpdated = req.body;
+    console.log(daylogUpdated);
     const updates = Object.keys(daylogUpdated);
-    if (!updates || updates.length > 1 || updates[0] !== 'logs' ) {
-        return res.status(400).send({ error: 'Other properties than logs are not allowed'});
+    const allowedUpdates = ['logs', 'isRunning'];
+    const isAllowed = updates.every(key => allowedUpdates.includes(key));
+    if (!isAllowed) {
+        return res.status(400).send({ error: 'Properties are not allowed'});
     }
 
-    // try {
+     try {
         const daylog = await Daylog.findOne({_id: req.params.id});
         if (!daylog) {
             return res.status(404).send();
         }
 
+        if (daylogUpdated.hasOwnProperty('isRunning')) {
+            daylog.isRunning = daylogUpdated.isRunning;            
+        } 
         daylog.logs = [...daylog.logs, ...daylogUpdated.logs];
         daylog.logs = daylog.logs.sort((a,b) => a.startTime < b.startTime ? -1 : 1);
         // on overlap adjust startTime to endforce new logs
@@ -92,13 +98,14 @@ router.put('/daylogs/:id', auth, async (req, res) => {
 
         res.send(daylog);
 
-    // } catch (e) {
-    //     res.status(400).send(e);        
-    // }
+     } catch (e) {
+         res.status(400).send(e);        
+     }
 });
 
 router.patch('/daylogs/:id', auth, async (req, res) => {
     const daylogUpdated = req.body;
+    console.log(daylogUpdated);
     const updates = Object.keys(daylogUpdated);
     const allowedUpdates = ['description', 'logs', 'isRunning'];
     const isAllowed = updates.every(key => allowedUpdates.includes(key));
@@ -112,6 +119,7 @@ router.patch('/daylogs/:id', auth, async (req, res) => {
         }
 
         updates.forEach(update => daylog[update] = daylogUpdated[update]);
+        
         await daylog.save();
 
         if (daylog.logs && daylog.logs.length > 0) {

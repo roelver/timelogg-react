@@ -1,14 +1,21 @@
 export const secsDay = 24 * 60 * 60;
 
 export const getBarLeftPosition = (log) => {
-    return log.startTime * (1200/secsDay);
+    return (log.startTime / secsDay) * 2400;
 
+}
+export const getStartTimeFromLeftPosition = (left) => {
+    return Math.floor((left / 2400) * secsDay);
+}
+export const getDurationFromWidth = (width) => {
+    return Math.floor((width / 2400) * secsDay);
 }
 export const getBarWidth = (log) => {
     const endtime = log.endTime || nowSecs();
-    return (endtime - log.startTime) * (1200/secsDay)
+    const width = Math.max(((endtime - log.startTime) / secsDay) * 2400, 1);
+    return width;
 }
-    
+
 export const getComment = (log) => {
       return log.comment;  
 }

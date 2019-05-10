@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
 const moment = require('moment');
 
+const nowSecs = require('../util/helpers').nowSecs;
+
 const daylogSchema = new mongoose.Schema({
     owner: {
         type: mongoose.Schema.Types.ObjectId,
@@ -37,7 +39,8 @@ const daylogSchema = new mongoose.Schema({
             type: Number,
             validate(value) {
                 // test endTime >= startTime
-                if (value && value < this.startTime) {
+                if (value && value.length > 0 && value < this.startTime) {
+                    console.log('Val. endTime"'+value+'"' );
                     throw new Error('Invalid endTime for', value);
                 }
             }
@@ -55,13 +58,20 @@ daylogSchema.pre('save', async function(next) {
         daylog.logs.sort((a, b) => {
             return a.startTime < b.startTime ? -1 : 1
         });
+        const logLen = daylog.logs.length;
         // avoid overlap in record's logs
-        for (let i = 0; i < daylog.logs.length-1; i++) {
-            if (daylog.logs[i].endTime >= daylog.logs[i+1].startTime) {
+        for (let i = 0; i < logLen-1; i++) {
+            if (daylog.logs[i].endTime >= daylog.logs[i+1].startTime || daylog.logs[i].endTime === undefined) {
+                console.log('Pre-save,adjust endTime for log',i, daylog.logs[i].endTime, daylog.logs[i+1].startTime);
                 daylog.logs[i].endTime = daylog.logs[i+1].startTime -1 ;
             }
         }
+        if (!daylog.isRunning && daylog.logs[logLen-1].endTime === undefined) {
+            console.log('Pre-save,adjust endTime for last log',logLen-1)
+            daylog.logs[logLen-1].endTime = nowSecs();
+        }
     }
+    
     next();
 });
 

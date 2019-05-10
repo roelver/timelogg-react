@@ -1,10 +1,13 @@
 import React from 'react';
 
+import { today } from '../../util/helper';
 import Timelinebar from './Timelinebar';
 
 const Timeline = function(props) {
 
-    const { myDaylog, miDlogIdx, currentDate } = props;
+    const { myDaylog, dlogIdx, currentDate, doResize } = props;
+
+ //   console.log('Timeline for', myDaylog);
 
     return (
         <td className="line">
@@ -12,12 +15,12 @@ const Timeline = function(props) {
             myDaylog.logs.map((log, index) => {
                 return (
                     <Timelinebar 
-                        idx={index}
+                        tlogIdx={index}
                         key={log._id}
                         myTlog={log}
-                        miDaylogIdx={miDlogIdx}
-                        updateFlag={myDaylog.updateFlag}
-                        currentDate={currentDate}
+                        dlogIdx={dlogIdx}
+                        isToday={currentDate === today()}
+                        doResize={doResize}
                     />
                 );
             })

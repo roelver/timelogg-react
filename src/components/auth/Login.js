@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Redirect } from 'react-router-dom';
 import { Alert } from 'react-bootstrap';
 
-import {login} from '../../state/actions';
+import {login} from '../../state/authActions';
 import { useStateValue } from '../../util/context';
 
 const Login = function() {
@@ -21,7 +21,6 @@ const Login = function() {
     
     const doLogin = async (event) => {
         event.preventDefault();
-        console.log('Email', email, 'Password', password);
         const action = await login(email, password);
         dispatch(action);
     }

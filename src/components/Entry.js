@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from 'react';
 
 import { useStateValue } from '../util/context';
-import { updateDate, loadDaylogs } from '../state/actions';
+import { updateDate } from '../state/clientActions';
+import { loadDaylogs, createDaylog, loadError, apiError } from '../state/apiActions';
 import { increaseDate, today } from '../util/helper';
 
 import LogForm from './timelog/LogForm';
 import TimelineArea from './timelog/TimelineArea';
 
 const Entry = function() {
+
     const [{ auth, allDaylogs, currentDate }, dispatch] = useStateValue();
     
-    console.log('Entry', allDaylogs, currentDate);
-
     const [ tasks, setTasks] = useState([]);
     const [ showModal, setShowModal] = useState(false);
         
@@ -21,7 +21,8 @@ const Entry = function() {
 
     useEffect( () => {
         loadDaylogs(currentDate, auth.token)
-            .then(action => dispatch(action));
+            .then(action => dispatch(action))
+            .catch(error => dispatch(loadError(error)));
     }, [currentDate, auth, dispatch]);
 
     useEffect( () => {
@@ -32,6 +33,9 @@ const Entry = function() {
     }
     
     const onNewTask = () => {
+        createDaylog(currentDate, auth.token)
+            .then(action => dispatch(action))
+            .catch(error => dispatch(apiError(error)));
     }
 
     const doUpdateDate = (newDate) => {
@@ -44,12 +48,10 @@ const Entry = function() {
 
     const setDay = (event) => {
         const newDate = event.target.value;
-        console.log('Update', newDate);
         doUpdateDate(newDate);        
     }
 
     const nextDay = () => {
-        console.log('Next date', currentDate);
         doUpdateDate(increaseDate(currentDate, 1));
     }
 

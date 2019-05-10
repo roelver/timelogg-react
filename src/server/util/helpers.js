@@ -1,5 +1,13 @@
 const Daylog = require('../models/daylog');
 
+const nowSecs = () => {
+    const dt = new Date();
+
+    return (dt.getHours() * 60 * 60) +
+           (dt.getMinutes() * 60) +
+            dt.getSeconds();
+}
+
 const adjustOverlaps = async (leadingDaylog) => {
     const allDaylogs = await Daylog.findDaylogsByDate(leadingDaylog.owner, leadingDaylog.logdate);
     if (allDaylogs && allDaylogs.length > 0) {
@@ -49,5 +57,6 @@ const adjustOverlaps = async (leadingDaylog) => {
 }
 
 module.exports = {
-    adjustOverlaps: adjustOverlaps
+    adjustOverlaps: adjustOverlaps,
+    nowSecs: nowSecs
 };

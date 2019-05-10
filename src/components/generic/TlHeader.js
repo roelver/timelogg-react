@@ -3,7 +3,7 @@ import { NavLink, Link } from "react-router-dom";
 
 import { useStateValue } from '../../util/context';
 
-import { logout } from '../../state/actions';
+import { logout } from '../../state/authActions';
 
 const TlHeader = function() {
 
