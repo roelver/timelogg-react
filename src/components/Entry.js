@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 import { useStateValue } from '../util/context';
 import { updateDate } from '../state/clientActions';
-import { loadDaylogs, createDaylog, loadError, apiError } from '../state/apiActions';
+import { loadDaylogs, createDaylog, loadError, apiError, copyRecentTasks } from '../state/apiActions';
 import { increaseDate, today } from '../util/helper';
 
 import LogForm from './timelog/LogForm';
@@ -14,8 +14,10 @@ const Entry = function() {
     
     const [ tasks, setTasks] = useState([]);
     const [ showModal, setShowModal] = useState(false);
-        
-    const controlModal = (toggle) => {
+    const [ formData, setFormData] = useState();
+    
+    const controlModal = (toggle, data) => {
+        setFormData(data);
         setShowModal(toggle);        
     }
 
@@ -26,10 +28,12 @@ const Entry = function() {
     }, [currentDate, auth, dispatch]);
 
     useEffect( () => {
-        setTasks(allDaylogs.map(log => log.task));
+        console.log('make taskList from', allDaylogs);
+        setTasks(allDaylogs.map(log => log.description));
     }, [allDaylogs]);
 
     const onCopyRecent = () => {
+        copyRecentTasks(currentDate, dispatch, auth.token);
     }
     
     const onNewTask = () => {
@@ -65,18 +69,18 @@ const Entry = function() {
                 </div> 
             </div> 
 
-            {showModal ? <LogForm taskList={tasks} controlModal={controlModal}/> : '' }
+            {showModal ? <LogForm taskList={tasks} formData={formData} controlModal={controlModal}/> : '' }
 
             <div className="entries">
                 <TimelineArea 
-                    userid={auth.email} 
+                    controlModal={controlModal}
                 />
                 <p className="controls">
                     <span className="control" onClick={onNewTask}>
                         <img src="img/add.png" alt="Add a new task"/>
                     </span>
                     <button className="btn btn-light" onClick={onCopyRecent}>Copy recent tasks</button>
-                    <button className="btn btn-light" onClick={() => controlModal(true)}>Enter Manual Time</button>
+                    <button className="btn btn-light" disabled={showModal} onClick={() => controlModal(true, undefined)}>Enter Manual Time</button>
                 </p>
             </div>
         </div>

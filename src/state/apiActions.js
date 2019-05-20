@@ -4,7 +4,7 @@ import {API_URL, LOAD_LOGS, CREATE_DAYLOG, LOAD_FAILED,
     START_RUNNING, STOP_RUNNING, API_ERROR, UPDATE_DAYLOG,
     DELETE_DAYLOG} from '../util/constants';
 
-import {authHeader, toYYYYMMDD, nowSecs } from '../util/helper';
+import {authHeader, toYYYYMMDD, nowSecs, today } from '../util/helper';
 import { logout } from './authActions';
 
 export const loadDaylogs = async (date, token) => {
@@ -19,6 +19,14 @@ export const loadDaylogs = async (date, token) => {
     }
 } 
 
+export const loadDaylogForTask = async (date, taskDesc, token) => {
+    
+        console.log('Get data for', date, taskDesc);
+        const logdate = toYYYYMMDD(date);    
+        const response = await axios.get(`${API_URL}/daylogs?logdate=${logdate}&taskDesc=${taskDesc}`, authHeader(token));
+        return  response.data;
+} 
+    
 export const loadError = (error) => {
     if (error.message.indexOf('401') > 0) {
         return logout();
@@ -39,13 +47,43 @@ export const apiError = (error) => {
     }
 }
 
-export const createDaylog = async (date, token) => {
+export const createTimelog = async (date, taskLog, dispatch, token) => {
+    
+       const existing =  await loadDaylogForTask(date, taskLog.description, token);
+       console.log('Found daylog',existing, date);
+       
+        if (!existing) {
+            throw Error('Task not found today');
+        }
+        let running = existing.isRunning;
+
+        if (date === today() && taskLog.log.endTime > nowSecs()) {
+            taskLog.log.endTime = undefined;
+            running = true;
+        }
+        const newDaylog = {
+                logs: [taskLog.log],
+                isRunning: running
+            };
+        const response = await axios.put(`${API_URL}/daylogs/${existing._id}`, newDaylog, authHeader(token) );
+        await loadDaylogs(date, token)
+                .then(action => {
+                    dispatch(action);
+                })
+                .catch(error => loadError(error)); 
+        return {
+            type: UPDATE_DAYLOG,
+            payload: response.data
+        }
+    }
+    
+    export const createDaylog = async (date, token, description = 'New...') => {
 
     const logdate = toYYYYMMDD(date);
 
     const newDaylog = {
         logdate,
-        description: 'New...',
+        description,
         isRunning: false,
         logs: []
     }
@@ -88,6 +126,26 @@ export const deleteDaylog = async (daylog, token) => {
     }
 }
     
+export const copyRecentTasks = async (date, dispatch, token) => {
+    
+    const taskResponse = await axios.get(`${API_URL}/tasklist/3`, authHeader(token) );
+    const taskResponseToday = await axios.get(`${API_URL}/tasklist/0`, authHeader(token) ) || [];
+    
+    const newTasks = taskResponse.data.filter(task => {
+        return !taskResponseToday.data.includes(task);
+    });
+    console.log (newTasks);
+    await newTasks.forEach(async (task) =>  {
+        await createDaylog(date, token, task);
+    });
+    await loadDaylogs(date, token)
+        .then(action => {
+            dispatch(action);
+        })
+        .catch(error => loadError(error)); 
+
+}
+
 export const startRunning = async (daylogId, token) => {
 
     const newlogs = {

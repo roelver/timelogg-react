@@ -7,9 +7,12 @@ const auth = require('../middleware/auth');
 const router = new express.Router();
 
 router.post('/daylogs', auth, async (req, res) => {
-    const existing = await Daylog.findDaylogsByDateDescription(req.user._id, req.body.logdate, req.body.description);
-    if (existing) {
-        return res.status(406).send('Daylog exists for '+req.body.logdate);
+    if (!req.body._id) {
+        // if the 
+        const existing = await Daylog.findDaylogsByDateDescription(req.user._id, req.body.logdate, req.body.description);
+        if (existing) {
+            return res.status(406).send('Daylog exists for '+req.body.logdate);
+        }
     }
     const daylog = new Daylog({
         ...req.body,
@@ -43,10 +46,18 @@ router.get('/daylogs/:id', auth, async (req, res) => {
 
 router.get('/daylogs', auth, async (req, res) => {
     try {
-        console.log('Date', req.query.logdate, req.user._id);
-        const daylogs = await Daylog.findDaylogsByDate(req.user._id, req.query.logdate);
+        console.log('Date', req.query.logdate, req.query.taskDesc, req.user._id);
+        let daylogs = [];
+        if (req.query.taskDesc) {
+            daylogs = await Daylog.findDaylogsByDateDescription(req.user._id, req.query.logdate, req.query.taskDesc); 
+        } else {
+            daylogs = await Daylog.findDaylogsByDate(req.user._id, req.query.logdate);
+            daylogs.sort((t1, t2) => t1.description > t2.description ? 1 : -1);            
+        }
+        console.log('Found', daylogs);
         res.status(200).send(daylogs);                
     } catch(error) {
+        console.log('Error', error);
         res.status(500).send(error);
     };
 });

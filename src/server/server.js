@@ -4,6 +4,7 @@ require('./db/mongoose');
 
 const userRouter = require('./routers/user');
 const daylogRouter = require('./routers/daylog');
+const tasklistRouter = require('./routers/tasklist');
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -24,6 +25,7 @@ app.use((req, res, next) => {
 app.use(express.json());
 app.use(userRouter);
 app.use(daylogRouter);
+app.use(tasklistRouter);
 
 app.listen(port, () => {
     console.log('Server is listening to port', port);

@@ -11,6 +11,8 @@ const TimelineArea = function(props) {
 
     const [{ auth, allDaylogs, currentDate, error }, dispatch] = useStateValue();
 
+    const {controlModal} = props;
+
     // Refresh every 15 seconds
     const [swap, setSwap] = useState(false);
 
@@ -24,7 +26,7 @@ const TimelineArea = function(props) {
         }
     });
 
-  //  console.log('TimelineArea', allDaylogs, error);
+    console.log('TimelineArea', allDaylogs, error);
 
     const doStartRunning = (dlog) => {
         allDaylogs.forEach(daylog => {
@@ -53,6 +55,15 @@ const TimelineArea = function(props) {
             updTlog.endTime = endTime;
         }
         updDlog.logs[tlogIdx] = updTlog;
+        updateDaylog(updDlog, currentDate, dispatch, auth.token)
+            .then(action => dispatch(action))
+            .catch(error => dispatch(apiError(error)));
+    }
+
+    const deleteBar = (dlogIdx, tlogIdx) => {
+        console.log('Delete bar', dlogIdx, tlogIdx);
+        const updDlog = allDaylogs[dlogIdx];
+        updDlog.logs.splice(tlogIdx,1);
         updateDaylog(updDlog, currentDate, dispatch, auth.token)
             .then(action => dispatch(action))
             .catch(error => dispatch(apiError(error)));
@@ -98,7 +109,9 @@ const TimelineArea = function(props) {
                                         currentDate={currentDate}
                                         myDaylog={dlog}
                                         doResize={resizeBar}
-                                    />
+                                        doDelete={deleteBar}
+                                        controlModal={controlModal}
+                                        />
                                 </tr>
                             );
                         })

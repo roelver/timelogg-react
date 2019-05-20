@@ -1,104 +1,179 @@
 import React, { useState } from 'react';
 
+import {createTimelog, apiError, updateDaylog } from '../../state/apiActions';
+import { useStateValue } from '../../util/context';
+import { toTime, getHH, getMM } from '../../util/helper';
+
 const LogForm = function(props) {
 
-    const {taskList, controlModal} = props;
+    const {taskList, controlModal, formData} = props;
+    const [{ auth, currentDate, allDaylogs }, dispatch] = useStateValue();
     
-    const [task, setTask] = useState();
-    const [startTimeHH, setStartTimeHH] = useState();
-    const [startTimeMM, setStartTimeMM] = useState();
-    const [endTimeHH, setEndTimeHH] = useState();
-    const [endTimeMM, setEndTimeMM] = useState();
-    const [comment, setComment] = useState('');
+    const [task, setTask] = useState(formData && taskList.length > 0 ? 
+                                    taskList[formData.dlogIdx] : taskList.length>0 ? taskList[0]: undefined);
+    const [startTimeHH, setStartTimeHH] = useState(formData ? getHH(formData.startTime) : 0);
+    const [startTimeMM, setStartTimeMM] = useState(formData ? getMM(formData.startTime) : 0);
+    const [endTimeHH, setEndTimeHH] = useState(formData ? getHH(formData.endTime) : 0);
+    const [endTimeMM, setEndTimeMM] = useState(formData ? getMM(formData.endTime) : 0);
+    const [comment, setComment] = useState(formData ? formData.comment : '');
     
-    const submitForm = () => {
-
+    const handleTask = (evt) =>{
+        setTask(evt.target.value);
     }
-    const numberOptionList = (high) => {
+    const handleStartTimeHH = (evt) =>{
+        setStartTimeHH(evt.target.value);
+    }
+    const handleStartTimeMM = (evt) =>{
+        setStartTimeMM(evt.target.value);
+    }
+
+    const handleEndTimeHH = (evt) =>{
+        setEndTimeHH(evt.target.value);
+    }
+    const handleEndTimeMM = (evt) =>{
+        setEndTimeMM(evt.target.value);
+    }
+    const handleComment = (evt) =>{
+        setComment(evt.target.value);
+    }
+
+    const submitForm = (evt) => {
+        evt.preventDefault();
+        if (formData) {
+            let updDlog = allDaylogs[formData.dlogIdx];
+            const updTlog = updDlog.logs[formData.tlogIdx];
+            
+            updTlog.startTime = toTime(startTimeHH, startTimeMM, 0);
+            updTlog.endTime = toTime(endTimeHH, endTimeMM, 0);
+            updTlog.comment = comment;
+            if (task === updDlog.description) {
+                updDlog.logs[formData.tlogIdx] = updTlog;
+            } else {
+                const newDlog = allDaylogs.filter(dlog => dlog.description === task );
+                console.log('Other daylog', newDlog );
+                if (!newDlog) {
+                    throw Error('The selected task could not be found');
+                }
+                updDlog = newDlog[0];
+                updDlog.logs.push(updTlog);
+            }
+            updateDaylog(updDlog, currentDate, dispatch, auth.token)
+                .then(action => dispatch(action))
+                .catch(error => dispatch(apiError(error)));                    
+        } else {
+            const taskLog = {
+                description: task,
+                log: {
+                    startTime: toTime(startTimeHH, startTimeMM, 0),
+                    endTime: toTime(endTimeHH, endTimeMM, 0),
+                    comment: comment
+                }
+            };
+            createTimelog(currentDate, taskLog, dispatch, auth.token)
+                .then(action => dispatch(action))
+                .catch(error => dispatch(apiError(error)));
+        }
+        controlModal(false);
+    }
+
+    const numberOptionList = (listId, high) => {
         let arr = Array.from(Array(high), (x, index) => index);
         return arr.map(item => {
-            return <option key={item} value={item}>{item}</option>;
+            return <option key={listId+item} value={item}>{item}</option>;
         });
     }
 
+    const formInvalid = () => {
+        const invalid = !( task && 
+            (parseInt(startTimeHH) < parseInt(endTimeHH) || 
+                (startTimeHH === endTimeHH && parseInt(startTimeMM) < parseInt(endTimeMM) ) ) );    
+        console.log('validator',invalid);
+        return invalid;
+    }
+    console.log('LogForm', taskList);
     return (
-        <div className="LogForm">
-            <div className="app-modal-header">
-                Manual Time Log Entry Form
-            </div>
-            <div className="app-modal-body">
-                <div id="manual">
-                    <form id="entryform" onSubmit={submitForm}>
-                        <div className="form-group">
-                            <label htmlFor="select-task">Task</label>
-                            <select className="form-control" required 
-                                    name="taskDesc" 
-                                    id="select-task" 
-                                    value={task}
-                                    onChange={setTask}
-                            >
-                                { taskList.map(task => {
-                                    return <option key={task} value={task}>{task}</option>;
-                                })}
-                            </select>
+        <div className="LogForm modal">
+            <div className="modal-dialog">
+                <div className="modal-content">
+                    <div className="modal-header">
+                        <div className="modal-title">Manual Time Log Entry Form</div>
+                    </div>
+                    <div className="modal-body">
+                        <div id="manual">
+                            <form id="entryform" onSubmit={submitForm}>
+                                <div className="form-group">
+                                    <label htmlFor="select-task">Task</label>
+                                    <select className="form-control" required 
+                                            name="taskDesc" 
+                                            id="select-task" 
+                                            value={task}
+                                            onChange={handleTask}
+                                    >
+                                        { taskList.map(task => {
+                                            console.log('Options', task);
+                                            return <option key={task} value={task}>{task}</option>;
+                                        })}
+                                    </select>
+                                </div>
+                                <div className="form-group">
+                                    <label htmlFor="fromHH">From</label>
+                                    <select id="fromHH" 
+                                            name="fromHH" 
+                                            required
+                                            value={startTimeHH}
+                                            onChange={handleStartTimeHH}
+                                    >
+                                    { numberOptionList('fromHH',24) }
+                                    </select>
+                                    <span>:</span>
+                                    <select id="fromMM" 
+                                        name="fromMM" 
+                                        required
+                                        value={startTimeMM}
+                                        onChange={handleStartTimeMM}
+                                    >
+                                        { numberOptionList('fromMM',60) }
+                                    </select>
+                                </div>
+                                <div className="form-group">
+                                    <label htmlFor="toHH">Until</label>
+                                    <select 
+                                        id="toHH" 
+                                        name="toHH" 
+                                        required
+                                        value={endTimeHH}
+                                        onChange={handleEndTimeHH}
+                                >
+                                        { numberOptionList('toHH',24) }
+                                    </select>
+                                    <span>:</span>
+                                    <select 
+                                        id="toMM" 
+                                        name="toMM" 
+                                        required
+                                        value={endTimeMM}
+                                        onChange={handleEndTimeMM}
+                                    >
+                                        { numberOptionList('toMM',60) }
+                                    </select>
+                                </div>
+                                <div className="form-group">
+                                    <label htmlFor="comment">Comment</label>
+                                    <input id="comment" type="text" 
+                                        name="comment" 
+                                        value={comment}
+                                        onChange={handleComment} 
+                                        placeholder="Comment" 
+                                        size="20"/>
+                                </div>
+                            </form>
                         </div>
-                        <div className="form-group">
-                            <label htmlFor="fromHH">From</label>
-                            <select id="fromHH" 
-                                    name="fromHH" 
-                                    required
-                                    value={startTimeHH}
-                                    onChange={setStartTimeHH}
-                            >
-                               { numberOptionList(24) }
-                            </select>
-                            <span>:</span>
-                            <select id="fromMM" 
-                                name="fromMM" 
-                                required
-                                value={startTimeMM}
-                                onChange={setStartTimeMM}
-                            >
-                                { numberOptionList(60) }
-                            </select>
-                        </div>
-                        <div className="form-group">
-                            <label htmlFor="toHH">Until</label>
-                            <select 
-                                id="toHH" 
-                                name="toHH" 
-                                required
-                                value={endTimeHH}
-                                onChange={setEndTimeHH}
-                        >
-                                { numberOptionList(24) }
-                            </select>
-                            <span>:</span>
-                            <select 
-                                id="toMM" 
-                                name="toMM" 
-                                required
-                                value={endTimeMM}
-                                onChange={setEndTimeMM}
-                            >
-                                { numberOptionList(60) }
-                            </select>
-                        </div>
-                        <div className="form-group">
-                            <label htmlFor="comment">Comment</label>
-                            <input id="comment" type="text" 
-                                name="comment" 
-                                value={comment}
-                                onChange={setComment} 
-                                placeholder="Comment" 
-                                size="20"/>
-                        </div>
-                    </form>
+                    </div>
+                    <div className="modal-footer">
+                        <button className="btn btn-light" onClick={() => controlModal(false)}>Close</button>
+                        <button type="submit" className="btn btn-light" form="entryform" disabled={formInvalid()}>Save</button>
+                    </div>
                 </div>
-            </div>
-            <div className="app-modal-footer">
-                <button className="btn btn-light" onClick={() => controlModal(false)}>Close</button>
-                <button type="submit" className="btn btn-light" form="entryform">Save</button>
             </div>
         </div>
   );

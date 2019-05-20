@@ -1,8 +1,6 @@
 const mongoose = require('mongoose');
 const moment = require('moment');
 
-const nowSecs = require('../util/helpers').nowSecs;
-
 const daylogSchema = new mongoose.Schema({
     owner: {
         type: mongoose.Schema.Types.ObjectId,
@@ -50,6 +48,14 @@ const daylogSchema = new mongoose.Schema({
         }
     }]
 });
+
+const nowSecs = () => {
+    const dt = new Date();
+
+    return (dt.getHours() * 60 * 60) +
+           (dt.getMinutes() * 60) +
+            dt.getSeconds();
+};
 
 // Sort logs on save
 daylogSchema.pre('save', async function(next) {

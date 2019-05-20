@@ -52,6 +52,13 @@ export const toYYYYMMDD = (date) => {
             date.substring(8,10);
     }
 }
+export const getHH = (time) => {
+    return Math.floor(time / (60*60));
+}
+export const getMM = (time) => {
+    const remain = time % (60*60);
+    return Math.floor(remain / 60);
+}
 
 export const toYYYY_MM_DD = (date) => {
     if (!date) return today();
@@ -81,6 +88,13 @@ export const nowSecs = () => {
     return (dt.getHours() * 60 * 60) +
            (dt.getMinutes() * 60) +
             dt.getSeconds();
+}
+
+export const toTime = (startHH, startMM, startSS) => {
+
+    return (startHH * 60 * 60) +
+           (startMM * 60) +
+            startSS;
 }
 
 export const todayDB = () => {

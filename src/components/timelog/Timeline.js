@@ -5,7 +5,7 @@ import Timelinebar from './Timelinebar';
 
 const Timeline = function(props) {
 
-    const { myDaylog, dlogIdx, currentDate, doResize } = props;
+    const { myDaylog, dlogIdx, currentDate, doResize, doDelete, controlModal } = props;
 
  //   console.log('Timeline for', myDaylog);
 
@@ -21,7 +21,9 @@ const Timeline = function(props) {
                         dlogIdx={dlogIdx}
                         isToday={currentDate === today()}
                         doResize={doResize}
-                    />
+                        doDelete={doDelete}
+                        controlModal={controlModal}
+                        />
                 );
             })
         }

@@ -5,7 +5,7 @@ import { updateDaylog, deleteDaylog, apiError } from '../../state/apiActions';
 
 const Taskform = function(props) {
 
-    const [{ auth }, dispatch] = useStateValue();
+    const [{ auth, currentDate }, dispatch] = useStateValue();
 
     const [description, setDescription] = useState(props.dlog.description);
     const myDaylog = props.dlog;
@@ -16,7 +16,8 @@ const Taskform = function(props) {
     } 
     const saveTask = () => {
         myDaylog.description = description;
-        updateDaylog(myDaylog, auth.token)
+
+        updateDaylog(myDaylog, currentDate, dispatch, auth.token)
             .then(action => dispatch(action))
             .catch(error => dispatch(apiError(error)));
         close();
@@ -28,9 +29,9 @@ const Taskform = function(props) {
             .catch(error => dispatch(apiError(error)));
         close();
     }
-        
+
     return (
-        <div>
+        <div className="Taskform">
             <input className="edit-taskname" 
                 type="text" 
                 value={description} 
