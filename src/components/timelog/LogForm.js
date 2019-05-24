@@ -2,15 +2,21 @@ import React, { useState } from 'react';
 
 import {createTimelog, apiError, updateDaylog } from '../../state/apiActions';
 import { useStateValue } from '../../util/context';
-import { toTime, getHH, getMM } from '../../util/helper';
+import { toTime, getHH, getMM, today } from '../../util/helper';
+import { nowSecs } from '../../server/util/helpers';
 
 const LogForm = function(props) {
 
-    const {taskList, controlModal, formData} = props;
+    const {taskList, controlModal, saveFormData, formData} = props;
     const [{ auth, currentDate, allDaylogs }, dispatch] = useStateValue();
     
-    const [task, setTask] = useState(formData && taskList.length > 0 ? 
-                                    taskList[formData.dlogIdx] : taskList.length>0 ? taskList[0]: undefined);
+    const taskDesc = formData ? 
+                        formData.task ? formData.task : 
+                            taskList.length > 0 ? taskList[formData.dlogIdx] : 
+                                taskList.length > 0 ? taskList[0] 
+                                : undefined 
+                     : undefined;
+    const [task, setTask] = useState(taskDesc);
     const [startTimeHH, setStartTimeHH] = useState(formData ? getHH(formData.startTime) : 0);
     const [startTimeMM, setStartTimeMM] = useState(formData ? getMM(formData.startTime) : 0);
     const [endTimeHH, setEndTimeHH] = useState(formData ? getHH(formData.endTime) : 0);
@@ -39,18 +45,19 @@ const LogForm = function(props) {
 
     const submitForm = (evt) => {
         evt.preventDefault();
-        if (formData) {
+        const startTime = toTime(startTimeHH, startTimeMM, 0);
+        const endTime = toTime(endTimeHH, endTimeMM, 0);
+        if (formData && formData.dlogIdx && formData.tlogIdx) {
             let updDlog = allDaylogs[formData.dlogIdx];
             const updTlog = updDlog.logs[formData.tlogIdx];
             
-            updTlog.startTime = toTime(startTimeHH, startTimeMM, 0);
-            updTlog.endTime = toTime(endTimeHH, endTimeMM, 0);
+            updTlog.startTime = startTime;
+            updTlog.endTime = endTime;
             updTlog.comment = comment;
             if (task === updDlog.description) {
                 updDlog.logs[formData.tlogIdx] = updTlog;
             } else {
                 const newDlog = allDaylogs.filter(dlog => dlog.description === task );
-                console.log('Other daylog', newDlog );
                 if (!newDlog) {
                     throw Error('The selected task could not be found');
                 }
@@ -64,8 +71,8 @@ const LogForm = function(props) {
             const taskLog = {
                 description: task,
                 log: {
-                    startTime: toTime(startTimeHH, startTimeMM, 0),
-                    endTime: toTime(endTimeHH, endTimeMM, 0),
+                    startTime: startTime,
+                    endTime: endTime,
                     comment: comment
                 }
             };
@@ -73,6 +80,10 @@ const LogForm = function(props) {
                 .then(action => dispatch(action))
                 .catch(error => dispatch(apiError(error)));
         }
+        const data = {
+            task, startTime, endTime, comment
+        }
+        saveFormData(data);
         controlModal(false);
     }
 
@@ -86,11 +97,11 @@ const LogForm = function(props) {
     const formInvalid = () => {
         const invalid = !( task && 
             (parseInt(startTimeHH) < parseInt(endTimeHH) || 
-                (startTimeHH === endTimeHH && parseInt(startTimeMM) < parseInt(endTimeMM) ) ) );    
-        console.log('validator',invalid);
+                (startTimeHH === endTimeHH && parseInt(startTimeMM) < parseInt(endTimeMM) ) ) 
+            && (currentDate !== today() || toTime(startTimeHH, startTimeMM, 0) < nowSecs()));    
         return invalid;
     }
-    console.log('LogForm', taskList);
+
     return (
         <div className="LogForm modal">
             <div className="modal-dialog">
@@ -110,7 +121,6 @@ const LogForm = function(props) {
                                             onChange={handleTask}
                                     >
                                         { taskList.map(task => {
-                                            console.log('Options', task);
                                             return <option key={task} value={task}>{task}</option>;
                                         })}
                                     </select>

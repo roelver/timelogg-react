@@ -60,6 +60,21 @@ export const getMM = (time) => {
     return Math.floor(remain / 60);
 }
 
+export const getTimeStr = (isToday, time) => {
+    let t = time;
+    if (!time) {
+        if (isToday) {
+            t = nowSecs();
+        } else {
+            t = secsDay - 1;
+        }
+    }
+    const hh = getHH(t);
+    const mm = getMM(t);
+    return (hh < 10 ? '0' : '') + hh + ':' +
+           (mm < 10 ? '0' : '') + mm;
+}
+
 export const toYYYY_MM_DD = (date) => {
     if (!date) return today();
     if (date instanceof Date) {

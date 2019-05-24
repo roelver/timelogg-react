@@ -4,9 +4,9 @@ import { ContextMenu, MenuItem, ContextMenuTrigger } from "react-contextmenu";
 
 import {getBarLeftPosition, 
     getBarWidth, 
-    getComment, 
     secsDay,
-    nowSecs
+    nowSecs,
+    getTimeStr
 } from '../../util/helper'
 
 
@@ -38,7 +38,6 @@ const Timelinebar = function(props) {
     },[isToday, myTlog]);
 
     const resizeStop = (e, direction, ref, delta, position) => {
-        console.log(direction, delta, position);
         setWidth(ref.offsetWidth);
         setLeft(position.x);
         doResize(dlogIdx, tlogIdx, position.x, ref.offsetWidth);
@@ -51,12 +50,10 @@ const Timelinebar = function(props) {
     }
 
     const handleDelete = (e, data) => {
-        console.log('Deleting...');
         doDelete(dlogIdx, tlogIdx);
     }
 
     const handleEdit = (e) => {
-        console.log('HandleEdit is not implemented yet, should display the takform with current values');
         const formData = {
             ...myTlog,
             dlogIdx,
@@ -64,7 +61,7 @@ const Timelinebar = function(props) {
         };
         controlModal(true, formData);
     }
-    const comment = getComment(myTlog);
+    const title = getTimeStr(isToday, myTlog.startTime) + '-' + getTimeStr(isToday, myTlog.endTime) + ': ' + myTlog.comment;
 
     const menuid = 'menu_'+dlogIdx+'_'+tlogIdx;
     return (
@@ -77,7 +74,7 @@ const Timelinebar = function(props) {
                     onResize={onResize}
                     onResizeStop={resizeStop}
                     minHeight='12px'
-                    title={comment}
+                    title={title}
                     disableDragging={true}
                     enableResizing={{ top: false, right:true, bottom:false, left:true, topRight:false, bottomRight:false, bottomLeft:false, topLeft:false}}
                 ></Rnd>

@@ -133,9 +133,13 @@ section {
   padding: 4px 4px 4px 10px;
   width: 850px; ;
 }
+#entryform label {
+  width: 80px;
+}
 
 #select-task {
   width: 250px;
+  display: inline-block;
 }
 .error-message {
   color: red;
@@ -351,6 +355,24 @@ td.line {
   display: flex;
   background: rgba(33, 33, 33, 0.6);
 }
+.LogForm .modal-dialog {
+    top: -500px;
+    opacity: 0;
+    -webkit-animation: slide-in 0.3s forwards;
+    animation: slide-in 0.3s forwards;
+}
+
+@-webkit-keyframes slide-in {
+ 100% { top: 0;
+        opacity: 1;
+       }
+}
+
+@keyframes slide-in {
+ 100% { top: 0; 
+  opacity: 1;
+}
+}
 .LogForm .modal-content{
   background-color: #333333;
   color: #eee;
@@ -362,8 +384,8 @@ td.line {
   z-index: 60;
   padding: 7px;
   position: absolute;
-  left: 130px;
   margin-top: -33px;
+  margin-left: 40px;
 }
 
 .Taskform button {

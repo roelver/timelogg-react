@@ -17,7 +17,9 @@ const Entry = function() {
     const [ formData, setFormData] = useState();
     
     const controlModal = (toggle, data) => {
-        setFormData(data);
+        if (data) {
+            setFormData(data);
+        }
         setShowModal(toggle);        
     }
 
@@ -28,14 +30,16 @@ const Entry = function() {
     }, [currentDate, auth, dispatch]);
 
     useEffect( () => {
-        console.log('make taskList from', allDaylogs);
         setTasks(allDaylogs.map(log => log.description));
     }, [allDaylogs]);
 
     const onCopyRecent = () => {
         copyRecentTasks(currentDate, dispatch, auth.token);
     }
-    
+    const saveFormData = (data) => {
+        setFormData(data);
+    }
+
     const onNewTask = () => {
         createDaylog(currentDate, auth.token)
             .then(action => dispatch(action))
@@ -69,7 +73,7 @@ const Entry = function() {
                 </div> 
             </div> 
 
-            {showModal ? <LogForm taskList={tasks} formData={formData} controlModal={controlModal}/> : '' }
+            {showModal ? <LogForm taskList={tasks} formData={formData} saveFormData={saveFormData} controlModal={controlModal}/> : '' }
 
             <div className="entries">
                 <TimelineArea 
@@ -80,7 +84,7 @@ const Entry = function() {
                         <img src="img/add.png" alt="Add a new task"/>
                     </span>
                     <button className="btn btn-light" onClick={onCopyRecent}>Copy recent tasks</button>
-                    <button className="btn btn-light" disabled={showModal} onClick={() => controlModal(true, undefined)}>Enter Manual Time</button>
+                    <button className="btn btn-light" disabled={showModal} onClick={() => controlModal(true, formData)}>Enter Manual Time</button>
                 </p>
             </div>
         </div>

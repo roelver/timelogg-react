@@ -5,7 +5,7 @@ import moment from 'moment';
 import { useStateValue } from '../util/context';
 import { updateDate } from '../state/clientActions';
 import { loadDaylogs, updateDaylog, loadError, apiError} from '../state/apiActions';
-import { increaseDate, today, nowSecs } from '../util/helper';
+import { increaseDate, today, nowSecs, secsDay } from '../util/helper';
 
 const Summary = function() {
 
@@ -17,11 +17,17 @@ const Summary = function() {
         setSwap(!swap);
    } 
 
-    useEffect(() => {
-        if (currentDate === today()) {
-            setTimeout(refresh, 15000);
+   useEffect(() => {
+    let timer = null;
+    if (currentDate === today()) {
+        timer = setTimeout(refresh, 15000);
+    }
+    if (timer) {
+        return () => {
+            clearTimeout(timer);
         }
-    });
+    }
+});
 
     useEffect( () => {
         loadDaylogs(currentDate, auth.token)
@@ -89,7 +95,11 @@ const Summary = function() {
 
     const getEndStr = (tlog) => {
         if (!tlog.endTime || tlog.endTime < 0) {
-            return 'now';
+            if (currentDate === today()) {
+                return 'now';
+            } else {
+                tlog.endTime = secsDay -1;
+            }
         }
         return getParticlesStr(tlog.endTime);
     }

@@ -46,7 +46,6 @@ router.get('/daylogs/:id', auth, async (req, res) => {
 
 router.get('/daylogs', auth, async (req, res) => {
     try {
-        console.log('Date', req.query.logdate, req.query.taskDesc, req.user._id);
         let daylogs = [];
         if (req.query.taskDesc) {
             daylogs = await Daylog.findDaylogsByDateDescription(req.user._id, req.query.logdate, req.query.taskDesc); 
@@ -54,10 +53,8 @@ router.get('/daylogs', auth, async (req, res) => {
             daylogs = await Daylog.findDaylogsByDate(req.user._id, req.query.logdate);
             daylogs.sort((t1, t2) => t1.description > t2.description ? 1 : -1);            
         }
-        console.log('Found', daylogs);
         res.status(200).send(daylogs);                
     } catch(error) {
-        console.log('Error', error);
         res.status(500).send(error);
     };
 });
@@ -84,7 +81,7 @@ router.put('/daylogs/:id', auth, async (req, res) => {
         } 
         daylog.logs = [...daylog.logs, ...daylogUpdated.logs];
         daylog.logs = daylog.logs.sort((a,b) => a.startTime < b.startTime ? -1 : 1);
-        // on overlap adjust startTime to endforce new logs
+        // on overlap in this daylog adjust startTime to endforce new logs
         let daylogslength = daylog.logs.length;
         let i = 1;
         while (i < daylogslength) {
@@ -105,6 +102,7 @@ router.put('/daylogs/:id', auth, async (req, res) => {
         }
     
         await daylog.save();
+        // adjust overlaps in other tasks
         await adjustOverlaps(daylog);            
 
         res.send(daylog);

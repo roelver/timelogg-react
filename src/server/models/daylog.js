@@ -56,6 +56,12 @@ const nowSecs = () => {
            (dt.getMinutes() * 60) +
             dt.getSeconds();
 };
+const today = () => {
+    const date = new Date();
+    return date.getFullYear() +
+            (date.getMonth() < 9 ? '0' : '')+(date.getMonth()+1) +
+            (date.getDate() < 10 ? '0' : '')+date.getDate();
+};
 
 // Sort logs on save
 daylogSchema.pre('save', async function(next) {
@@ -68,17 +74,27 @@ daylogSchema.pre('save', async function(next) {
         // avoid overlap in record's logs
         for (let i = 0; i < logLen-1; i++) {
             if (daylog.logs[i].endTime >= daylog.logs[i+1].startTime || daylog.logs[i].endTime === undefined) {
-                console.log('Pre-save,adjust endTime for log',i, daylog.logs[i].endTime, daylog.logs[i+1].startTime);
                 daylog.logs[i].endTime = daylog.logs[i+1].startTime -1 ;
             }
         }
         if (!daylog.isRunning && daylog.logs[logLen-1].endTime === undefined) {
-            console.log('Pre-save,adjust endTime for last log',logLen-1)
             daylog.logs[logLen-1].endTime = nowSecs();
         }
     }
     
     next();
+});
+
+daylogSchema.post('init', function(doc) {
+    // Adjust running task not today
+    if (doc.isRunning && doc.logdate !== today()) {
+        doc.isRunning = false;
+        const logcount = doc.logs.length;
+        if (logcount > 0 && !doc.logs[logcount-1].endTime) {
+            doc.logs[logcount-1].endTime = (24*60*60) -1;
+        }
+    }
+    return doc;
 });
 
 daylogSchema.statics.findDaylogsByDate = async (ownerId, dt) => {

@@ -3,7 +3,7 @@ import { Alert } from 'react-bootstrap';
 
 import { startRunning, stopRunning, apiError, updateDaylog } from '../../state/apiActions';
 import { useStateValue } from '../../util/context';
-import { today, getStartTimeFromLeftPosition, getDurationFromWidth } from '../../util/helper';
+import { today, getStartTimeFromLeftPosition, getDurationFromWidth, nowSecs } from '../../util/helper';
 import Taskline from './Taskline';
 import Timeline from './Timeline';
 
@@ -21,12 +21,18 @@ const TimelineArea = function(props) {
    } 
 
     useEffect(() => {
+        let timer = null;
         if (currentDate === today()) {
-            setTimeout(refresh, 15000);
+            timer = setTimeout(refresh, 15000);
+        }
+        if (timer) {
+            return () => {
+                clearTimeout(timer);
+            }
         }
     });
 
-    console.log('TimelineArea', allDaylogs, error);
+    console.log('TimelineArea', allDaylogs);
 
     const doStartRunning = (dlog) => {
         allDaylogs.forEach(daylog => {
@@ -51,8 +57,15 @@ const TimelineArea = function(props) {
         if (updTlog.startTime !== startTime) {
             updTlog.startTime = startTime;
         }
-        if (updTlog.endTime && updTlog.endTime !== endTime) {
-            updTlog.endTime = endTime;
+        if (updTlog.endTime !== endTime) {
+            console.log('Endtime resize', updTlog.endTime, endTime);
+            if (endTime > nowSecs()) {
+                updTlog.endTime = undefined;
+                updDlog.isRunning = true;
+            } else {
+                updTlog.endTime = endTime;
+                updDlog.isRunning = false;
+            }
         }
         updDlog.logs[tlogIdx] = updTlog;
         updateDaylog(updDlog, currentDate, dispatch, auth.token)
@@ -63,6 +76,11 @@ const TimelineArea = function(props) {
     const deleteBar = (dlogIdx, tlogIdx) => {
         console.log('Delete bar', dlogIdx, tlogIdx);
         const updDlog = allDaylogs[dlogIdx];
+        const tlog = updDlog.logs[tlogIdx];
+    
+        if (updDlog.isRunning && !tlog.endTime) {
+            updDlog.isRunning = false;
+        }
         updDlog.logs.splice(tlogIdx,1);
         updateDaylog(updDlog, currentDate, dispatch, auth.token)
             .then(action => dispatch(action))
