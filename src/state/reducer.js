@@ -8,7 +8,6 @@ export const initialState = { allDaylogs: [],
                               error: undefined };
  
 const reducer = (state, action) => {
-    console.log('>Action', action);
     switch(action.type) {
         case types.LOGIN:
             persistUser(action.payload);
@@ -85,7 +84,6 @@ const reducer = (state, action) => {
                 allDaylogs: newDayLogs,
                 error: undefined
             };
-            console.log('Start/Stop reducer', updLog, newState);
             return newState; 
 
         default:

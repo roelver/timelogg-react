@@ -32,12 +32,9 @@ const TimelineArea = function(props) {
         }
     });
 
-    console.log('TimelineArea', allDaylogs);
-
     const doStartRunning = (dlog) => {
         allDaylogs.forEach(daylog => {
             if (daylog.isRunning) {
-                console.log('Stop task', daylog.description);
                 stopRunning(daylog, auth.token)
                     .then(action => dispatch(action))
                     .catch(error => dispatch(apiError(error)));
@@ -51,14 +48,12 @@ const TimelineArea = function(props) {
     const resizeBar = (dlogIdx, tlogIdx, left, width) => {
         const startTime = getStartTimeFromLeftPosition(left);
         const endTime = startTime + getDurationFromWidth(width);
-        console.log('Area resize', dlogIdx, tlogIdx, left, width, '=>', startTime, endTime);
         const updDlog = allDaylogs[dlogIdx];
         const updTlog = updDlog.logs[tlogIdx];
         if (updTlog.startTime !== startTime) {
             updTlog.startTime = startTime;
         }
         if (updTlog.endTime !== endTime) {
-            console.log('Endtime resize', updTlog.endTime, endTime);
             if (endTime > nowSecs()) {
                 updTlog.endTime = undefined;
                 updDlog.isRunning = true;
@@ -74,7 +69,6 @@ const TimelineArea = function(props) {
     }
 
     const deleteBar = (dlogIdx, tlogIdx) => {
-        console.log('Delete bar', dlogIdx, tlogIdx);
         const updDlog = allDaylogs[dlogIdx];
         const tlog = updDlog.logs[tlogIdx];
     

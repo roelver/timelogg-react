@@ -62,7 +62,6 @@ router.get('/daylogs', auth, async (req, res) => {
 // Add log to existing table
 router.put('/daylogs/:id', auth, async (req, res) => {
     const daylogUpdated = req.body;
-    console.log(daylogUpdated);
     const updates = Object.keys(daylogUpdated);
     const allowedUpdates = ['logs', 'isRunning'];
     const isAllowed = updates.every(key => allowedUpdates.includes(key));
@@ -114,7 +113,6 @@ router.put('/daylogs/:id', auth, async (req, res) => {
 
 router.patch('/daylogs/:id', auth, async (req, res) => {
     const daylogUpdated = req.body;
-    console.log(daylogUpdated);
     const updates = Object.keys(daylogUpdated);
     const allowedUpdates = ['description', 'logs', 'isRunning'];
     const isAllowed = updates.every(key => allowedUpdates.includes(key));

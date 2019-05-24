@@ -2,8 +2,7 @@ import React, { useState } from 'react';
 
 import {createTimelog, apiError, updateDaylog } from '../../state/apiActions';
 import { useStateValue } from '../../util/context';
-import { toTime, getHH, getMM, today } from '../../util/helper';
-import { nowSecs } from '../../server/util/helpers';
+import { toTime, getHH, getMM, today, nowSecs } from '../../util/helper';
 
 const LogForm = function(props) {
 

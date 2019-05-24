@@ -38,7 +38,6 @@ const daylogSchema = new mongoose.Schema({
             validate(value) {
                 // test endTime >= startTime
                 if (value && value.length > 0 && value < this.startTime) {
-                    console.log('Val. endTime"'+value+'"' );
                     throw new Error('Invalid endTime for', value);
                 }
             }

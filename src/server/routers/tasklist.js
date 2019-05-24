@@ -20,9 +20,7 @@ router.get('/tasklist/:ageInDays', auth, async (req, res) => {
     try {
         const age = parseInt(req.params.ageInDays);
         const startDate = toYYYYMMDD(age);
-        console.log('Tasks from ', startDate);
         const daylogs = await Daylog.find({logdate: {$gte: startDate}});
-
         if (daylogs && daylogs.length > 0) {
             const tasks = [ ...new Set(daylogs.map(dlog => dlog.description))]
                 .sort((task1, task2) => task1 > task2 ? 1 : -1);

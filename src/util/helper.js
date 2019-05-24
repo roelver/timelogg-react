@@ -20,22 +20,6 @@ export const getComment = (log) => {
       return log.comment;  
 }
 
-export const deleteLog = () => {
-            
-}
-            
-export const onResize = () => {
-                
-}
-
-export const updateTimelog = () => {
-    
-}
-
-export const markDlogDirty = () => {
-    
-}
-
 export const authHeader = (token) => {
     return { headers: {'Authorization': 'Bearer '+token }};
 }
