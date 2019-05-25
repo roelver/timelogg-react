@@ -4,7 +4,7 @@
   "description": "A simple Time Registration tool with Node / React",
   "main": "index.js",
   "scripts": {
-    "server": "nodemon src/server/server.js",
+    "server": "node src/server/server.js",
     "client": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
