@@ -15,3 +15,5 @@ export const API_ERROR = '#API_ERROR';
 
 export const START_RUNNING = '#START_RUNNING';
 export const STOP_RUNNING = '#STOP_RUNNING';
+
+export const API_URL = process.env.NODE_ENV === 'production' ? 'http://localhost:3000' : '';

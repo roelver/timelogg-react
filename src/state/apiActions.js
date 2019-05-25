@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import {LOAD_LOGS, CREATE_DAYLOG, LOAD_FAILED, 
+import {API_URL, LOAD_LOGS, CREATE_DAYLOG, LOAD_FAILED, 
     START_RUNNING, STOP_RUNNING, API_ERROR, UPDATE_DAYLOG,
     DELETE_DAYLOG} from '../util/constants';
 
@@ -10,7 +10,7 @@ import { logout } from './authActions';
 export const loadDaylogs = async (date, token) => {
 
     const logdate = toYYYYMMDD(date);    
-    const response = await axios.get(`/api/daylogs?logdate=${logdate}`, authHeader(token));
+    const response = await axios.get(`${API_URL}/api/daylogs?logdate=${logdate}`, authHeader(token));
 
     return {
         type: LOAD_LOGS,
@@ -20,7 +20,7 @@ export const loadDaylogs = async (date, token) => {
 
 export const loadDaylogForTask = async (date, taskDesc, token) => {
         const logdate = toYYYYMMDD(date);    
-        const response = await axios.get(`/api/daylogs?logdate=${logdate}&taskDesc=${taskDesc}`, authHeader(token));
+        const response = await axios.get(`${API_URL}/api/daylogs?logdate=${logdate}&taskDesc=${taskDesc}`, authHeader(token));
         return  response.data;
 } 
     
@@ -61,7 +61,7 @@ export const createTimelog = async (date, taskLog, dispatch, token) => {
                 logs: [taskLog.log],
                 isRunning: running
             };
-        const response = await axios.put(`/api/daylogs/${existing._id}`, newDaylog, authHeader(token) );
+        const response = await axios.put(`${API_URL}/api/daylogs/${existing._id}`, newDaylog, authHeader(token) );
         await loadDaylogs(date, token)
                 .then(action => {
                     dispatch(action);
@@ -84,7 +84,7 @@ export const createTimelog = async (date, taskLog, dispatch, token) => {
         logs: []
     }
 
-    const response = await axios.post(`/api/daylogs`, newDaylog, authHeader(token) );
+    const response = await axios.post(`${API_URL}/api/daylogs`, newDaylog, authHeader(token) );
 
     return {
         type: CREATE_DAYLOG,
@@ -99,7 +99,7 @@ export const updateDaylog = async (daylog, currentDate, dispatch, token) => {
         description: daylog.description,
         isRunning: daylog.isRunning
     }
-    const response = await axios.patch(`/api/daylogs/${daylog._id}`, updDaylog, authHeader(token) );
+    const response = await axios.patch(`${API_URL}/api/daylogs/${daylog._id}`, updDaylog, authHeader(token) );
     await loadDaylogs(currentDate, token)
        .then(action => {
             dispatch(action);
@@ -113,7 +113,7 @@ export const updateDaylog = async (daylog, currentDate, dispatch, token) => {
     
 export const deleteDaylog = async (daylog, token) => {
     
-    const response = await axios.delete(`/api/daylogs/${daylog._id}`, authHeader(token) );
+    const response = await axios.delete(`${API_URL}/api/daylogs/${daylog._id}`, authHeader(token) );
 
     return {
         type: DELETE_DAYLOG,
@@ -123,8 +123,8 @@ export const deleteDaylog = async (daylog, token) => {
     
 export const copyRecentTasks = async (date, dispatch, token) => {
     
-    const taskResponse = await axios.get(`/api/tasklist/3`, authHeader(token) );
-    const taskResponseToday = await axios.get(`/api/tasklist/0`, authHeader(token) ) || [];
+    const taskResponse = await axios.get(`${API_URL}/api/tasklist/3`, authHeader(token) );
+    const taskResponseToday = await axios.get(`${API_URL}/api/tasklist/0`, authHeader(token) ) || [];
     
     const newTasks = taskResponse.data.filter(task => {
         return !taskResponseToday.data.includes(task);
@@ -149,7 +149,7 @@ export const startRunning = async (daylogId, token) => {
         }],
         isRunning: true
     };
-    const response = await axios.put(`/api/daylogs/${daylogId}`, newlogs, authHeader(token) );
+    const response = await axios.put(`${API_URL}/api/daylogs/${daylogId}`, newlogs, authHeader(token) );
     return {
         type: START_RUNNING,
         payload: response.data
@@ -168,7 +168,7 @@ export const stopRunning = async (daylog, token) => {
             isRunning: false
         };
 
-        const response = await axios.patch(`/api/daylogs/${daylog._id}`, updlogs, authHeader(token) );
+        const response = await axios.patch(`${API_URL}/api/daylogs/${daylog._id}`, updlogs, authHeader(token) );
         return {
             type: STOP_RUNNING,
             payload: response.data

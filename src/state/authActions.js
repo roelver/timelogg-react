@@ -1,10 +1,10 @@
 import axios from 'axios';
 
-import {LOGIN, LOGOUT, LOGIN_FAILED, SIGNUP, SIGNUP_FAILED } from '../util/constants';
+import {LOGIN, LOGOUT, LOGIN_FAILED, SIGNUP, SIGNUP_FAILED, API_URL } from '../util/constants';
 
 export const login = async (email, password) => {
     try {
-        const userInfo = await axios.post(`/api/login`, {email, password});
+        const userInfo = await axios.post(`${API_URL}/api/login`, {email, password});
         return {
             type: LOGIN,
             payload: userInfo.data
@@ -20,7 +20,7 @@ export const login = async (email, password) => {
 
 export const signup = async (email, password, name) => {
     try {
-        const userInfo = await axios.post(`/api/signin`, {email, password, name});
+        const userInfo = await axios.post(`${API_URL}/api/signin`, {email, password, name});
         return {
             type: SIGNUP,
             payload: userInfo.data
