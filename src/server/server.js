@@ -1,6 +1,4 @@
 const express = require('express');
-const path = require('path');
-const fs = require('fs');
 
 require('./db/mongoose');
 
@@ -26,11 +24,6 @@ app.use((req, res, next) => {
 //production mode: host React app from here
 if (process.env.NODE_ENV === 'production') {
     app.use(express.static('build'));
-    // app.use('/static/js', express.static('build/static/js'));
-    // app.use('/static/css', express.static('build/static/css'));
-    // app.get('/', (req, res) => {
-    //     res.sendFile('build/index.html');
-    // })
 }
 
 app.use(express.json());
