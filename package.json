@@ -11,7 +11,6 @@
     "eject": "react-scripts eject",
     "dev": "concurrently \"npm run server\" \"npm run start\""
   },
-  "proxy": "http://localhost:3000",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/roelver/timelogg-react.git"
