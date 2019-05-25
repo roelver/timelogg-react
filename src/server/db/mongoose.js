@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
 
-mongoose.connect('mongodb://roelver:Zaq1Xsw2@ds261486.mlab.com:61486/heroku_r1fsv87r',
+const mongoUrl = process.env.MONGODB_URI || 'mongodb://localhost:27017/timelogg-api';
+console.log('Connecting to Mongo on', mongoUrl );
+mongoose.connect(mongoUrl,
     {
         useNewUrlParser: true, 
         useCreateIndex: true
