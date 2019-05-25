@@ -26,10 +26,11 @@ app.use((req, res, next) => {
 if (process.env.NODE_ENV === 'production') {
     app.use('/roelver/timelogg-react/static/js', express.static(path.join(__dirname, 'build/static/js')));
     app.use('/roelver/timelogg-react/static/css', express.static(path.join(__dirname, 'build/static/css')));
-    app.get('*', (req, res) => {
+    app.use(express.static(path.join(__dirname, 'build')));
+    app.get('/', (req, res) => {
         res.sendfile(path.join(__dirname, 'build/index.html'));
-      })
-    }
+    })
+}
 
 app.use(express.json());
 app.use(userRouter);
