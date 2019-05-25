@@ -7,8 +7,6 @@ const Timeline = function(props) {
 
     const { myDaylog, dlogIdx, currentDate, doResize, doDelete, controlModal } = props;
 
- //   console.log('Timeline for', myDaylog);
-
     return (
         <td className="line">
         {

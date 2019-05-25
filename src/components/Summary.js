@@ -52,7 +52,6 @@ const Summary = function() {
         doUpdateDate(increaseDate(currentDate, 1));
     }
     const deleteBar = (dlogIdx, tlogIdx) => {
-        console.log('Delete bar', dlogIdx, tlogIdx);
         const updDlog = allDaylogs[dlogIdx];
         updDlog.logs.splice(tlogIdx,1);
         updateDaylog(updDlog, currentDate, dispatch, auth.token)

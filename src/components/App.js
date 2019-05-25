@@ -21,7 +21,6 @@ function App() {
 	if (authData) {
 		const auth = JSON.parse(authData);
 		auth.isLoggedIn = true;
-		console.log('From localStorage', auth);
 		startState = { ...initialState, auth};
 	}
 	const current = localStorage.getItem('currentDate');

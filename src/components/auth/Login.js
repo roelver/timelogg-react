@@ -26,7 +26,6 @@ const Login = function() {
     }
 
     if (auth && auth.token) {
-        console.log('Redirect', auth);
         return <Redirect to='/entry' />;        
     }
 
