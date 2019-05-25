@@ -61,6 +61,7 @@ router.get('/api/daylogs', auth, async (req, res) => {
 
 // Add log to existing table
 router.put('/api/daylogs/:id', auth, async (req, res) => {
+    console.log('PUT start')
     const daylogUpdated = req.body;
     const updates = Object.keys(daylogUpdated);
     const allowedUpdates = ['logs', 'isRunning'];
@@ -70,16 +71,19 @@ router.put('/api/daylogs/:id', auth, async (req, res) => {
     }
 
      try {
+        console.log('PUT Read', req.params.id);
         const daylog = await Daylog.findOne({_id: req.params.id});
         if (!daylog) {
             return res.status(404).send();
         }
 
+        console.log('PUT Daylog found', daylog);
         if (daylogUpdated.hasOwnProperty('isRunning')) {
             daylog.isRunning = daylogUpdated.isRunning;            
         } 
         daylog.logs = [...daylog.logs, ...daylogUpdated.logs];
         daylog.logs = daylog.logs.sort((a,b) => a.startTime < b.startTime ? -1 : 1);
+        console.log('PUT Timelogs sorted', daylog.logs);
         // on overlap in this daylog adjust startTime to endforce new logs
         let daylogslength = daylog.logs.length;
         let i = 1;
@@ -100,10 +104,13 @@ router.put('/api/daylogs/:id', auth, async (req, res) => {
             i++;
         }
     
+        console.log('PUT Before save', daylog.logs);
         await daylog.save();
+        console.log('PUT saved');
         // adjust overlaps in other tasks
         await adjustOverlaps(daylog);            
-
+        console.log('PUT adjusted');
+        
         res.send(daylog);
 
      } catch (e) {
