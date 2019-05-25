@@ -10,16 +10,21 @@ const nowSecs = () => {
 
 const adjustOverlaps = async (leadingDaylog) => {
     const allDaylogs = await Daylog.findDaylogsByDate(leadingDaylog.owner, leadingDaylog.logdate);
+    console.log('Adjust 1');
     if (allDaylogs && allDaylogs.length > 0) {
         const otherDaylogs = allDaylogs.filter(dl => dl._id.toString() !== leadingDaylog._id.toString());
+        console.log('Adjust 2');
         if (otherDaylogs && otherDaylogs.length > 0) {
             otherDaylogs.forEach(async (daylog) => {
+                console.log('Adjust 3', daylog);
                 if (daylog.logs && daylog.logs.length > 0) {
                     let updated = false;
                     let dayloglength = daylog.logs.length;
                     let i = 0;
                     while (i < dayloglength) {
+                        console.log('Adjust 4', i);
                         for ( let j = 0; j < leadingDaylog.logs.length; j++) {
+                            console.log('Adjust 5',);
                             const leader = Object.assign(leadingDaylog.logs[j]);
                             if (!leader.endTime) {
                                 leader.endTime = nowSecs();
@@ -29,6 +34,7 @@ const adjustOverlaps = async (leadingDaylog) => {
                                     updated = true;
                                }
                             }
+                            console.log('Adjust 6',);
                             // 1 leader-log covers full daylog-log: delete daylog-log
                             if ( leader.startTime <= daylog.logs[i].startTime && leader.endTime >= daylog.logs[i].endTime) {
                                 daylog.logs.splice(i,1);
@@ -64,6 +70,7 @@ const adjustOverlaps = async (leadingDaylog) => {
                     }
                     i++;
                 }
+                console.log('Adjust 7',);
                 if (leadingDaylog.isRunning && daylog.isRunning) {
                     daylog.isRunning = false;
                     updated = true;
@@ -71,6 +78,7 @@ const adjustOverlaps = async (leadingDaylog) => {
                 if (updated) {
                     await daylog.save();
                 }
+                console.log('Adjust 8',);                
             }});
         }
     }
