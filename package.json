@@ -20,7 +20,7 @@
   "bugs": {
     "url": "https://github.com/roelver/timelogg-react/issues"
   },
-  "homepage": "https://github.com/roelver/timelogg-react#readme",
+  "homepage": "https://rtimelogg.herokuapp.com",
   "dependencies": {
     "axios": "^0.18.0",
     "bcryptjs": "^2.4.3",
