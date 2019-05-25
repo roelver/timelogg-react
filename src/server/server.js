@@ -26,14 +26,14 @@ app.use((req, res, next) => {
 //production mode
 if (process.env.NODE_ENV === 'production') {
     console.log(__dirname);
-    fs.readdir('..', function(err, items) {
+    fs.readdir('.', function(err, items) {
         console.log(items);
     });
-    app.use(express.static(path.join(__dirname, 'build')));
-    app.use('/roelver/timelogg-react/static/js', express.static(path.join(__dirname, 'build/static/js')));
-    app.use('/roelver/timelogg-react/static/css', express.static(path.join(__dirname, 'build/static/css')));
+    app.use(express.static(path.join(__dirname, '../build')));
+    app.use('/roelver/timelogg-react/static/js', express.static(path.join(__dirname, '../build/static/js')));
+    app.use('/roelver/timelogg-react/static/css', express.static(path.join(__dirname, '../build/static/css')));
     app.get('/', (req, res) => {
-        res.sendFile(path.join(__dirname, 'build/index.html'));
+        res.sendFile(path.join(__dirname, '../build/index.html'));
     })
 }
 
