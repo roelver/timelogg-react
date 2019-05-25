@@ -13,7 +13,7 @@ const toYYYYMMDD = (age) => {
         (date.getDate() < 10 ? '0' : '')+date.getDate();
 }
 
-router.get('/tasklist/:ageInDays', auth, async (req, res) => {
+router.get('/api/tasklist/:ageInDays', auth, async (req, res) => {
     if (!req.params.ageInDays) {
         return res.status(401).send('No age date was given');
     }

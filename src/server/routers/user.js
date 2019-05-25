@@ -5,7 +5,7 @@ const auth = require('../middleware/auth');
 
 const router = new express.Router();
 
-router.post('/signin', async (req, res) =>  {
+router.post('/api/signin', async (req, res) =>  {
     const user = new User(req.body);
     try {
         await user.save()
@@ -17,7 +17,7 @@ router.post('/signin', async (req, res) =>  {
 });
 
 
-router.post('/login', async (req, res) =>  {
+router.post('/api/login', async (req, res) =>  {
     const {email, password} = req.body;
     try {
         const user = await User.findByCredentials(email, password);
@@ -30,11 +30,11 @@ router.post('/login', async (req, res) =>  {
 });
 
 
-router.get('/users/me', auth, (req, res) => {
+router.get('/api/users/me', auth, (req, res) => {
     res.status(200).send(req.user);
 });
 
-router.patch('/users/me', auth, async (req, res) => {
+router.patch('/api/users/me', auth, async (req, res) => {
     const userUpdated = req.body;
     const updates = Object.keys(userUpdated);
     const allowedUpdates = ['name', 'email', 'password'];
@@ -59,7 +59,7 @@ router.patch('/users/me', auth, async (req, res) => {
     }
 });
 
-router.delete('/users/me', auth, async (req, res) => {
+router.delete('/api/users/me', auth, async (req, res) => {
     try {
         await req.user.remove();
         res.send(req.user);

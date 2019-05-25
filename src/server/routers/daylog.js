@@ -6,7 +6,7 @@ const auth = require('../middleware/auth');
 
 const router = new express.Router();
 
-router.post('/daylogs', auth, async (req, res) => {
+router.post('/api/daylogs', auth, async (req, res) => {
     if (!req.body._id) {
         // if the 
         const existing = await Daylog.findDaylogsByDateDescription(req.user._id, req.body.logdate, req.body.description);
@@ -31,7 +31,7 @@ router.post('/daylogs', auth, async (req, res) => {
     };
 });
 
-router.get('/daylogs/:id', auth, async (req, res) => {
+router.get('/api/daylogs/:id', auth, async (req, res) => {
     try {
         const daylog = await Daylog.findOne ({_id: req.params.id});
         if (daylog) {
@@ -44,7 +44,7 @@ router.get('/daylogs/:id', auth, async (req, res) => {
     };
 });
 
-router.get('/daylogs', auth, async (req, res) => {
+router.get('/api/daylogs', auth, async (req, res) => {
     try {
         let daylogs = [];
         if (req.query.taskDesc) {
@@ -60,7 +60,7 @@ router.get('/daylogs', auth, async (req, res) => {
 });
 
 // Add log to existing table
-router.put('/daylogs/:id', auth, async (req, res) => {
+router.put('/api/daylogs/:id', auth, async (req, res) => {
     const daylogUpdated = req.body;
     const updates = Object.keys(daylogUpdated);
     const allowedUpdates = ['logs', 'isRunning'];
@@ -111,7 +111,7 @@ router.put('/daylogs/:id', auth, async (req, res) => {
      }
 });
 
-router.patch('/daylogs/:id', auth, async (req, res) => {
+router.patch('/api/daylogs/:id', auth, async (req, res) => {
     const daylogUpdated = req.body;
     const updates = Object.keys(daylogUpdated);
     const allowedUpdates = ['description', 'logs', 'isRunning'];
@@ -140,7 +140,7 @@ router.patch('/daylogs/:id', auth, async (req, res) => {
     }
 });
 
-router.delete('/daylogs/:id', auth, async (req, res) => {
+router.delete('/api/daylogs/:id', auth, async (req, res) => {
     try {
         const daylog = await Daylog.findOneAndDelete({_id: req.params.id});
         if (!daylog) {
