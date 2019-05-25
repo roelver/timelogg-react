@@ -29,11 +29,11 @@ if (process.env.NODE_ENV === 'production') {
     fs.readdir('.', function(err, items) {
         console.log(items);
     });
-    app.use(express.static(path.join(__dirname, '../build')));
-    app.use('/roelver/timelogg-react/static/js', express.static(path.join(__dirname, '../build/static/js')));
-    app.use('/roelver/timelogg-react/static/css', express.static(path.join(__dirname, '../build/static/css')));
+    app.use(express.static('build'));
+    app.use('/roelver/timelogg-react/static/js', express.static('build/static/js'));
+    app.use('/roelver/timelogg-react/static/css', express.static('build/static/css'));
     app.get('/', (req, res) => {
-        res.sendFile(path.join(__dirname, '../build/index.html'));
+        res.sendFile('build/index.html');
     })
 }
 
