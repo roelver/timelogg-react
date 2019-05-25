@@ -1,5 +1,6 @@
 const express = require('express');
 const path = require('path');
+const fs = require('fs');
 
 require('./db/mongoose');
 
@@ -24,6 +25,14 @@ app.use((req, res, next) => {
 });
 //production mode
 if (process.env.NODE_ENV === 'production') {
+    console.log(__dirname);
+    fs.readdir(__dirname, function(err, items) {
+        console.log(items);
+     
+        for (var i=0; i<items.length; i++) {
+            console.log(items[i]);
+        }
+    });
     app.use(express.static(path.join(__dirname, 'build')));
     app.use('/roelver/timelogg-react/static/js', express.static(path.join(__dirname, 'build/static/js')));
     app.use('/roelver/timelogg-react/static/css', express.static(path.join(__dirname, 'build/static/css')));
