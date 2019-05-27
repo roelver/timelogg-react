@@ -35,7 +35,7 @@ const adjustOverlaps = async (leadingDaylog) => {
                             }
                             // 1 leader-log covers full daylog-log: delete daylog-log
                             if ( leader.startTime <= daylog.logs[i].startTime && leader.endTime >= daylog.logs[i].endTime) {
-                                console.log('Adjust 6a', i);
+                                console.log('Adjust 6a', i, dayloglength);
                                 daylog.logs.splice(i,1);
                                 dayloglength--;
                                 updated = true;    
@@ -59,16 +59,12 @@ const adjustOverlaps = async (leadingDaylog) => {
                                         // 4 Leader-log in between daylog-log: split daylog 
                                         if (daylog.logs[i].startTime < leader.startTime && 
                                             (daylog.logs[i].endTime > leader.endTime || !daylog.logs[i].endTime) ) {
-                                            console.log('Adjust 6d', i);
+                                            console.log('Adjust 6d', i, dayloglength);
                                             const clone = daylog.logs[i].toObject();
                                             delete clone._id;
                                             clone.startTime = leader.endTime + 1;
                                             daylog.logs.splice(i+1,0,clone);  // duplicate log
                                             daylog.logs[i].endTime = leader.startTime - 1;
-                                            i++;
-                                            if (i < dayloglength) {
-                                                dayloglength++;
-                                            }
                                             updated = true;
                                         }
                                     }
