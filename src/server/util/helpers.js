@@ -9,23 +9,22 @@ const nowSecs = () => {
 };
 
 const adjustOverlaps = async (leadingDaylog) => {
+    console.log('Adjust 1', leadingDaylog);
     const allDaylogs = await Daylog.findDaylogsByDate(leadingDaylog.owner, leadingDaylog.logdate);
-    console.log('Adjust 1');
     if (allDaylogs && allDaylogs.length > 0) {
         const otherDaylogs = allDaylogs.filter(dl => dl._id.toString() !== leadingDaylog._id.toString());
-        console.log('Adjust 2');
         if (otherDaylogs && otherDaylogs.length > 0) {
-            otherDaylogs.forEach(async (daylog) => {
-                console.log('Adjust 3', daylog);
+            for (const daylog of otherDaylogs) {
+                console.log('Adjust 2', daylog);
                 if (daylog.logs && daylog.logs.length > 0) {
                     let updated = false;
                     let dayloglength = daylog.logs.length;
                     let i = 0;
                     while (i < dayloglength) {
-                        console.log('Adjust 4', i);
+//                        console.log('Adjust 4', i, dayloglength);
                         for ( let j = 0; j < leadingDaylog.logs.length; j++) {
-                            console.log('Adjust 5',);
                             const leader = Object.assign(leadingDaylog.logs[j]);
+//                            console.log('Adjust 5', i, j, leader, daylog.logs[i]);
                             if (!leader.endTime) {
                                 leader.endTime = nowSecs();
                                if (!daylog.logs[i].endTime) {
@@ -34,55 +33,57 @@ const adjustOverlaps = async (leadingDaylog) => {
                                     updated = true;
                                }
                             }
-                            console.log('Adjust 6',);
                             // 1 leader-log covers full daylog-log: delete daylog-log
                             if ( leader.startTime <= daylog.logs[i].startTime && leader.endTime >= daylog.logs[i].endTime) {
+                                console.log('Adjust 6a', i);
                                 daylog.logs.splice(i,1);
                                 dayloglength--;
                                 updated = true;    
                             } else {
-                            // 2 leader-log covers start of daylog-log: adjust daylog-log startTime
-                            if ( leader.startTime <= daylog.logs[i].startTime && 
-                                 (leader.endTime < daylog.logs[i].endTime || !daylog.logs[i].endTime ) &&
-                                  leader.endTime >= daylog.logs[i].startTime) {
-                                daylog.logs[i].startTime = leader.endTime + 1;
-                                updated = true;    
-                            } else {
-                            // 3 leader-log covers end of daylog-log: adjust daylog-log endTime
-                            if ( leader.endTime >= daylog.logs[i].endTime && 
-                                leader.startTime > daylog.logs[i].startTime &&
-                                leader.startTime <= daylog.logs[i].endTime) {
-                               daylog.logs[i].endTime = leader.startTime - 1;
-                               updated = true;    
-                            } else {
-                            // 4 Leader-log in between daylog-log: split daylog 
-                            if (daylog.logs[i].startTime < leader.startTime && 
-                                (daylog.logs[i].endTime > leader.endTime || !daylog.logs[i].endTime) ) {
-                                console.log('Adjust 6a', i, leader, daylog.logs[i]);
-                                const clone = daylog.logs[i].toObject();
-                                delete clone._id;
-                                clone.startTime = leader.endTime + 1;
-                                daylog.logs.splice(i+1,0,clone);  // duplicate log
-                                daylog.logs[i].endTime = leader.startTime - 1;
-                                if (i < 10) {
-                                    dayloglength++;
+                                // 2 leader-log covers start of daylog-log: adjust daylog-log startTime
+                                if ( leader.startTime <= daylog.logs[i].startTime && 
+                                    (leader.endTime < daylog.logs[i].endTime || !daylog.logs[i].endTime ) &&
+                                    leader.endTime >= daylog.logs[i].startTime) {
+                                    console.log('Adjust 6b', i);
+                                    daylog.logs[i].startTime = leader.endTime + 1;
+                                    updated = true;    
+                                } else {
+                                    // 3 leader-log covers end of daylog-log: adjust daylog-log endTime
+                                    if ( leader.endTime >= daylog.logs[i].endTime && 
+                                        leader.startTime > daylog.logs[i].startTime &&
+                                        leader.startTime <= daylog.logs[i].endTime) {
+                                        console.log('Adjust 6c', i);
+                                        daylog.logs[i].endTime = leader.startTime - 1;
+                                        updated = true;    
+                                    } else {
+                                        // 4 Leader-log in between daylog-log: split daylog 
+                                        if (daylog.logs[i].startTime < leader.startTime && 
+                                            (daylog.logs[i].endTime > leader.endTime || !daylog.logs[i].endTime) ) {
+                                            console.log('Adjust 6d', i);
+                                            const clone = daylog.logs[i].toObject();
+                                            delete clone._id;
+                                            clone.startTime = leader.endTime + 1;
+                                            daylog.logs.splice(i+1,0,clone);  // duplicate log
+                                            daylog.logs[i].endTime = leader.startTime - 1;
+                                            dayloglength++;
+                                            updated = true;
+                                        }
+                                    }
                                 }
-                                updated = true;
                             }
-                        }}}
+                        }
+                        i++;
                     }
-                    i++;
+                    if (leadingDaylog.isRunning && daylog.isRunning) {
+                        daylog.isRunning = false;
+                        updated = true;
+                    }
+                    if (updated) {
+                        console.log('Adjust 7, save',daylog);                
+                        await daylog.save();
+                    }
                 }
-                console.log('Adjust 7',);
-                if (leadingDaylog.isRunning && daylog.isRunning) {
-                    daylog.isRunning = false;
-                    updated = true;
-                }
-                if (updated) {
-                    await daylog.save();
-                }
-                console.log('Adjust 8',);                
-            }});
+            }
         }
     }
 };

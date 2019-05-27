@@ -20,7 +20,7 @@ export const login = async (email, password) => {
 
 export const signup = async (email, password, name) => {
     try {
-        const userInfo = await axios.post(`${API_URL}/api/signin`, {email, password, name});
+        const userInfo = await axios.post(`${API_URL}/api/signin`, {name, email, password});
         return {
             type: SIGNUP,
             payload: userInfo.data
@@ -29,7 +29,7 @@ export const signup = async (email, password, name) => {
         console.log(error);
         return {
             type: SIGNUP_FAILED,
-            payload: 'Sign up failed'
+            payload: error.errmsg
         }
     }
 }

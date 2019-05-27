@@ -9,6 +9,8 @@ export const initialState = { allDaylogs: [],
  
 const reducer = (state, action) => {
     switch(action.type) {
+
+        case types.SIGNUP:
         case types.LOGIN:
             persistUser(action.payload);
             return { ...state,
@@ -24,6 +26,7 @@ const reducer = (state, action) => {
             };
 
         case types.LOGIN_FAILED:
+        case types.SIGNUP_FAILED:
             clear();
             return { ...state,
                 auth: {},

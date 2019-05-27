@@ -129,9 +129,9 @@ export const copyRecentTasks = async (date, dispatch, token) => {
     const newTasks = taskResponse.data.filter(task => {
         return !taskResponseToday.data.includes(task);
     });
-    await newTasks.forEach(async (task) =>  {
+    for (const task of newTasks) {
         await createDaylog(date, token, task);
-    });
+    };
     await loadDaylogs(date, token)
         .then(action => {
             dispatch(action);
