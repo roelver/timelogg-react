@@ -65,7 +65,10 @@ const adjustOverlaps = async (leadingDaylog) => {
                                             clone.startTime = leader.endTime + 1;
                                             daylog.logs.splice(i+1,0,clone);  // duplicate log
                                             daylog.logs[i].endTime = leader.startTime - 1;
-                                            dayloglength++;
+                                            i++;
+                                            if (i < dayloglength) {
+                                                dayloglength++;
+                                            }
                                             updated = true;
                                         }
                                     }
