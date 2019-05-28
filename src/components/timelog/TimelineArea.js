@@ -17,7 +17,9 @@ const TimelineArea = function(props) {
     const [swap, setSwap] = useState(false);
 
     const refresh = () => {
-        setSwap(!swap);
+        console.log('Refresh');
+        const newSwap = !swap;
+        setSwap(newSwap);
    } 
 
     useEffect(() => {
