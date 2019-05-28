@@ -94,6 +94,7 @@ const LogForm = function(props) {
     }
 
     const formInvalid = () => {
+        console.log(task, currentDate, 'Start', startTimeHH, startTimeMM, 'End', endTimeHH, endTimeMM, 'Now', today(), nowSecs());
         const invalid = !( task && 
             (parseInt(startTimeHH) < parseInt(endTimeHH) || 
                 (startTimeHH === endTimeHH && parseInt(startTimeMM) < parseInt(endTimeMM) ) ) 
