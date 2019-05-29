@@ -11,11 +11,11 @@ const LogForm = function(props) {
     
     const taskDesc = formData ? 
                         formData.task ? formData.task : 
-                            taskList.length > 0 ? taskList[formData.dlogIdx] : 
-                                taskList.length > 0 ? taskList[0] 
-                                : undefined 
-                     : undefined;
-    const [task, setTask] = useState(taskDesc);
+                        taskList.length > formData.dlogIdx ? taskList[formData.dlogIdx] : 
+                        taskList.length > 0 ? taskList[0] : undefined 
+                    : undefined;
+
+                    const [task, setTask] = useState(taskDesc);
     const [startTimeHH, setStartTimeHH] = useState(formData ? getHH(formData.startTime) : 0);
     const [startTimeMM, setStartTimeMM] = useState(formData ? getMM(formData.startTime) : 0);
     const [endTimeHH, setEndTimeHH] = useState(formData ? getHH(formData.endTime) : 0);
@@ -94,7 +94,10 @@ const LogForm = function(props) {
     }
 
     const formInvalid = () => {
-        console.log(task, currentDate, 'Start', startTimeHH, startTimeMM, 'End', endTimeHH, endTimeMM, 'Now', today(), nowSecs());
+        if (!task && taskList.length > 0) {
+            setTask(taskList[0]);
+            return true;
+        }
         const invalid = !( task && 
             (parseInt(startTimeHH) < parseInt(endTimeHH) || 
                 (startTimeHH === endTimeHH && parseInt(startTimeMM) < parseInt(endTimeMM) ) ) 
