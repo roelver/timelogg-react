@@ -78,6 +78,7 @@ img.logo {
 .navbar div.nav-item a.active, .navbar div.nav-item:hover a{
    background-color: #333333;
 }
+
 .active-user {
    float: right;
    font-weight: bold;
