@@ -31,8 +31,8 @@ const Taskline = function({ dlog, currentDate, starter }) {
     }
 
     return (
-        <tr className="tlbody" key={taskid}>
-            <td className="startstop">
+        <div className="tlbody3" key={taskid}>
+            <div className="startstop">
                 { isToday ? 
                     dlog.isRunning ? 
                         <span className="control" onClick={doStopRunning}>
@@ -44,17 +44,17 @@ const Taskline = function({ dlog, currentDate, starter }) {
                         </span>
                     : '' 
                 }
-            </td>
-            <td className="taskmenu">
+            </div>
+            <div className="taskmenu">
                 <button className="btn btn-light menu" onClick={doToggleForm}>
                     <i className="fa fa-cog"></i>
                 </button>
                 { isFormVisible ? 
                     <Taskform dlog={dlog} close={doToggleForm}/>
                 : '' }
-            </td>
-            <td className="taskdesc">{myTask}</td>
-        </tr>
+            </div>
+            <div className="taskdesc">{myTask}</div>
+        </div>
     );
 }
 

@@ -14,6 +14,10 @@ const Timelinebar = function(props) {
 
     const {myTlog, isToday, doResize, doDelete, dlogIdx, tlogIdx, controlModal } = props;
 
+    if (!isToday && !myTlog.endTime) {
+        myTlog.endTime = secsDay-1;
+    }
+
     const initWidth = getBarWidth(myTlog);
     const initLeft = getBarLeftPosition(myTlog);
 
@@ -25,17 +29,14 @@ const Timelinebar = function(props) {
         setLeft(initLeft);
     }
 
-    if (!isToday && !myTlog.endTime) {
-        myTlog.endTime = secsDay-1;
-    }
   
-    useEffect(() => {
-        if (isToday && !myTlog.endTime) {
-            const tmpTlog = {...myTlog};
-            tmpTlog.endTime = nowSecs();
-            setWidth(getBarWidth(tmpTlog));
-        }
-    },[isToday, myTlog]);
+    // useEffect(() => {
+    //     if (isToday && (!myTlog.endTime || myTlog.endTime ===  myTlog.startTime)) {
+    //         const tmpTlog = {...myTlog};
+    //         tmpTlog.endTime = nowSecs();
+    //         setWidth(getBarWidth(tmpTlog));
+    //     }
+    // },[isToday, myTlog]);
 
     const resizeStop = (e, direction, ref, delta, position) => {
         setWidth(ref.offsetWidth);

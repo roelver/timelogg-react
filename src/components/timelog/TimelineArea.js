@@ -3,7 +3,7 @@ import { Alert } from 'react-bootstrap';
 
 import { startRunning, stopRunning, apiError, updateDaylog } from '../../state/apiActions';
 import { useStateValue } from '../../util/context';
-import { today, getStartTimeFromLeftPosition, getDurationFromWidth, nowSecs } from '../../util/helper';
+import { today, getStartTimeFromLeftPosition, getDurationFromWidth, nowSecs, reorgTlogs } from '../../util/helper';
 import Taskline from './Taskline';
 import Timeline from './Timeline';
 
@@ -50,8 +50,10 @@ const TimelineArea = function(props) {
     const resizeBar = (dlogIdx, tlogIdx, left, width) => {
         const startTime = getStartTimeFromLeftPosition(left);
         const endTime = startTime + getDurationFromWidth(width);
-        const updDlog = allDaylogs[dlogIdx];
+        console.log('Resize', dlogIdx, tlogIdx, left, width, startTime, endTime);
+        let updDlog = allDaylogs[dlogIdx];
         const updTlog = updDlog.logs[tlogIdx];
+        console.log('Dlog before', updDlog);
         if (updTlog.startTime !== startTime) {
             updTlog.startTime = startTime;
         }
@@ -61,10 +63,12 @@ const TimelineArea = function(props) {
                 updDlog.isRunning = true;
             } else {
                 updTlog.endTime = endTime;
-                updDlog.isRunning = false;
+//                updDlog.isRunning = false;
             }
         }
         updDlog.logs[tlogIdx] = updTlog;
+        updDlog.logs = reorgTlogs(updDlog, tlogIdx);
+        console.log('Dlog after', updDlog);
         updateDaylog(updDlog, currentDate, dispatch, auth.token)
             .then(action => dispatch(action))
             .catch(error => dispatch(apiError(error)));
@@ -85,11 +89,10 @@ const TimelineArea = function(props) {
 
     return (
         <div className="TimelineArea">
-	        <table id="marginbox" cellSpacing="0">
-                <tbody>
-		        <tr className="header">
-			        <td colSpan="3" className="tlbody"><div className="hidden">{swap ? '.':','}</div></td>
-		        </tr>
+	        <div id="marginbox">
+		        <div className="header">
+			        <div className="tlbody"><div className="hidden">{swap ? '.':','}</div></div>
+		        </div>
                 { allDaylogs.map((dlog, index) => {
                        return (
                             <Taskline 
@@ -103,11 +106,10 @@ const TimelineArea = function(props) {
                     })
                 }
 
-                <tr className="footer">
-                    <td colSpan="3" className="tlbody"></td>
-                </tr>
-                </tbody>
-	        </table>
+                <div className="footer">
+                    <div className="tlbody"></div>
+                </div>
+	        </div>
 
             <div id="scrollview">
                 <table id="scrollbox" cellSpacing="0">

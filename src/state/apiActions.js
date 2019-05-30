@@ -99,6 +99,7 @@ export const updateDaylog = async (daylog, currentDate, dispatch, token) => {
         description: daylog.description,
         isRunning: daylog.isRunning
     }
+    console.log('UpdateDaylog action', updDaylog);
     const response = await axios.patch(`${API_URL}/api/daylogs/${daylog._id}`, updDaylog, authHeader(token) );
     await loadDaylogs(currentDate, token)
        .then(action => {

@@ -13,6 +13,7 @@ export const getDurationFromWidth = (width) => {
 export const getBarWidth = (log) => {
     const endtime = log.endTime || nowSecs();
     const width = Math.max(((endtime - log.startTime) / secsDay) * 2400, 1);
+//    console.log('Width', width, log.startTime, log.endTime);
     return width;
 }
 
@@ -113,4 +114,32 @@ export const persistUser = (userdata) => {
         token: userdata.token
     };
     localStorage.setItem('user', JSON.stringify(user));
+}
+
+export const reorgTlogs = (updDlog, leadtlogIdx) => {
+    for (let i = 0; i < updDlog.logs.length; i++) {
+
+        if (i !== leadtlogIdx) {
+            if (updDlog.logs[leadtlogIdx].startTime <= updDlog.logs[i].startTime && 
+                updDlog.logs[leadtlogIdx].endTime >= updDlog.logs[i].endTime) {
+                updDlog.logs[i].startTime = -1; // delete
+            } else {
+                if (updDlog.logs[leadtlogIdx].startTime > updDlog.logs[i].startTime && 
+                    updDlog.logs[leadtlogIdx].startTime <= updDlog.logs[i].endTime) {
+                    updDlog.logs[leadtlogIdx].startTime = updDlog.logs[i].startTime; // merge start
+                    updDlog.logs[i].startTime  = -1; 
+                } else {
+                    if (updDlog.logs[leadtlogIdx].endTime > updDlog.logs[i].startTime && 
+                        updDlog.logs[leadtlogIdx].endTime <= updDlog.logs[i].endTime) {
+                        updDlog.logs[leadtlogIdx].endTime = updDlog.logs[i].endTime; // merge end
+                        updDlog.logs[i].startTime = -1; 
+                    }
+                }
+            }
+        }
+    }
+    console.log('before filter', updDlog.logs);
+    const logs = updDlog.logs.filter(log => log.startTime > 0);
+    console.log('after filter', logs);
+    return logs;
 }
