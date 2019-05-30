@@ -82,6 +82,7 @@ img.logo {
    float: right;
    font-weight: bold;
    padding-right: 20px;
+   padding-top: 6px;
    color: #ccc;
    font-size: 1.1em;
 }
@@ -225,6 +226,7 @@ button.showmanualform {
 .right {
   width: 100%;
   text-align: right;
+  margin-top: 6px;
 }
 .alert-true {
   background-color: #e66;
@@ -465,9 +467,6 @@ table.summary {
 }
 .duration {
   width: 15%;
-}
-.right {
-  text-align: right;
 }
 .footer {
   font-weight: bold;
