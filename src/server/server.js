@@ -24,6 +24,11 @@ app.use((req, res, next) => {
 //production mode: host React app from here
 if (process.env.NODE_ENV === 'production') {
     app.use(express.static('build'));
+    app.use('/entry', express.static('build', { index: 'index.html' }));
+    app.use('/summary', express.static('build', { index: 'index.html' }));
+    app.use('/login', express.static('build', { index: 'index.html' }));
+    app.use('/signup', express.static('build', { index: 'index.html' }));
+    app.use('/about', express.static('build', { index: 'index.html' }));
 }
 
 app.use(express.json());
@@ -31,7 +36,6 @@ app.use(userRouter);
 app.use(daylogRouter);
 app.use(tasklistRouter);
 
-app.use('*', express.static('build', { index: 'index.html' }));
 
 app.listen(port, () => {
     console.log('Server is listening to port', port);
