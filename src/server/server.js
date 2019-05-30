@@ -31,6 +31,8 @@ app.use(userRouter);
 app.use(daylogRouter);
 app.use(tasklistRouter);
 
+app.use('*', express.static('build', { index: 'index.html' }));
+
 app.listen(port, () => {
     console.log('Server is listening to port', port);
 });

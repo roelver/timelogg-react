@@ -18,6 +18,7 @@ const TimelineArea = function(props) {
 
     const refresh = () => {
         const newSwap = !swap;
+        console.log('Refresh');
         setSwap(newSwap);
    } 
 
@@ -87,7 +88,7 @@ const TimelineArea = function(props) {
 	        <table id="marginbox" cellSpacing="0">
                 <tbody>
 		        <tr className="header">
-			        <td colSpan="3" className="tlbody"></td>
+			        <td colSpan="3" className="tlbody"><div className="hidden">{swap ? '.':','}</div></td>
 		        </tr>
                 { allDaylogs.map((dlog, index) => {
                        return (
