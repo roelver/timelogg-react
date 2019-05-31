@@ -2,6 +2,7 @@ const Daylog = require('../models/daylog');
 
 const nowSecs = () => {
     const dt = new Date();
+    dt.setTime( dt.getTime() + (dt.getTimezoneOffset()+1)*60*1000 );
 
     return (dt.getHours() * 60 * 60) +
            (dt.getMinutes() * 60) +
