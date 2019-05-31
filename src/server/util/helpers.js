@@ -21,13 +21,13 @@ const adjustOverlaps = async (leadingDaylog) => {
                     if (!leader.endTime) {
                         leader.endTime = nowSecs();
                     }
-//                    console.log('Adjust 3 leader', leader.startTime, leader.endTime);
+                    console.log('Adjust 3 leader', leader.startTime, leader.endTime);
                     if (daylog.logs && daylog.logs.length > 0) {
                         let updated = false;
                         let dayloglength = daylog.logs.length;
                         let i = 0;
                         while (i < dayloglength) {
-//                            console.log('Adjust 4', i, daylog.logs[i].startTime, daylog.logs[i].endTime);
+                            console.log('Adjust 4', i, daylog.logs[i].startTime, daylog.logs[i].endTime);
                             // 1 leader-log covers full daylog-log: delete daylog-log
                             if ( leader.startTime <= daylog.logs[i].startTime && leader.endTime >= daylog.logs[i].endTime) {
                                 console.log('Adjust 6a', i, dayloglength);
