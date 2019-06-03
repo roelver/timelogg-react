@@ -102,7 +102,6 @@ router.put('/api/daylogs/:id', auth, async (req, res) => {
         }
     
         await daylog.save();
-        console.log('PUT saved', daylog);
         const savedDaylog = daylog.toObject();
         // adjust overlaps in other tasks
         await adjustOverlaps(daylog);            

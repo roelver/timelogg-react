@@ -13,7 +13,6 @@ export const getDurationFromWidth = (width) => {
 export const getBarWidth = (log) => {
     const endtime = log.endTime || nowSecs();
     const width = Math.max(((endtime - log.startTime) / secsDay) * 2400, 1);
-//    console.log('Width', width, log.startTime, log.endTime);
     return width;
 }
 
@@ -138,8 +137,6 @@ export const reorgTlogs = (updDlog, leadtlogIdx) => {
             }
         }
     }
-    console.log('before filter', updDlog.logs);
     const logs = updDlog.logs.filter(log => log.startTime > 0);
-    console.log('after filter', logs);
     return logs;
 }

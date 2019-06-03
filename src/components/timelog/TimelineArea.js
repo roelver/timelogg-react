@@ -18,7 +18,6 @@ const TimelineArea = function(props) {
 
     const refresh = () => {
         const newSwap = !swap;
-        console.log('Refresh');
         setSwap(newSwap);
    } 
 
@@ -50,10 +49,8 @@ const TimelineArea = function(props) {
     const resizeBar = (dlogIdx, tlogIdx, left, width) => {
         const startTime = getStartTimeFromLeftPosition(left);
         const endTime = startTime + getDurationFromWidth(width);
-        console.log('Resize', dlogIdx, tlogIdx, left, width, startTime, endTime);
         let updDlog = allDaylogs[dlogIdx];
         const updTlog = updDlog.logs[tlogIdx];
-        console.log('Dlog before', updDlog);
         if (updTlog.startTime !== startTime) {
             updTlog.startTime = startTime;
         }
@@ -68,7 +65,6 @@ const TimelineArea = function(props) {
         }
         updDlog.logs[tlogIdx] = updTlog;
         updDlog.logs = reorgTlogs(updDlog, tlogIdx);
-        console.log('Dlog after', updDlog);
         updateDaylog(updDlog, currentDate, dispatch, auth.token)
             .then(action => dispatch(action))
             .catch(error => dispatch(apiError(error)));

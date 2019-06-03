@@ -74,7 +74,6 @@ const reducer = (state, action) => {
 
         case types.STOP_RUNNING:
         case types.START_RUNNING:
-            console.log('Start/Stop',action.payload);
             const updLog = action.payload;
             const newDayLogs = state.allDaylogs.map(log => {
                 if (log._id === updLog._id) {

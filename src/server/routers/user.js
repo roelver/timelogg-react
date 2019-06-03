@@ -9,7 +9,6 @@ router.post('/api/signin', async (req, res) =>  {
     const user = new User(req.body);
     try {
         await user.save();
-        console.log('New user', user);
         const token = await user.generateAccessToken();
         return res.status(201).send({user, token});
     } catch(e) {
