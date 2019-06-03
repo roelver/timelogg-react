@@ -1,13 +1,6 @@
 const Daylog = require('../models/daylog');
 
-const nowSecs = () => {
-    const dt = new Date();
-    dt.setTime( dt.getTime() + (dt.getTimezoneOffset()+1)*60*1000 );
-
-    return (dt.getHours() * 60 * 60) +
-           (dt.getMinutes() * 60) +
-            dt.getSeconds();
-};
+const secsDay = 24 * 60 * 60;
 
 const adjustOverlaps = async (leadingDaylog) => {
     console.log('Adjust 1', leadingDaylog);
@@ -20,7 +13,7 @@ const adjustOverlaps = async (leadingDaylog) => {
                 for ( let j = 0; j < leadingDaylog.logs.length; j++) {
                     const leader = Object.assign(leadingDaylog.logs[j]);
                     if (!leader.endTime) {
-                        leader.endTime = nowSecs();
+                        leader.endTime = secsDay;
                     }
                     console.log('Adjust 3 leader', leader.startTime, leader.endTime);
                     if (daylog.logs && daylog.logs.length > 0) {
@@ -82,5 +75,4 @@ const adjustOverlaps = async (leadingDaylog) => {
     }}
 };
 
-module.exports.nowSecs = nowSecs;
 module.exports.adjustOverlaps = adjustOverlaps;
