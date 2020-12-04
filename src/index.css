@@ -1,34 +1,34 @@
 @media (min-width: 1200px) {
-  .container {
+   .container {
       width: 1170px;
-  }
+   }
 }
 
 @media (min-width: 1450px) {
-  .container {
+   .container {
       width: 1420px;
-  }
+   }
 }
 
 @media (min-width: 1620px) {
-  .container {
+   .container {
       width: 1590px;
-  }
+   }
 }
 .App {
-  background-color: #333333;
-  display: flex;
-  min-height: 100vh;
-  flex-direction: column;
-  font-size: 0.9em;
+   background-color: #333333;
+   display: flex;
+   min-height: 100vh;
+   flex-direction: column;
+   font-size: 0.9em;
 }
 .header {
-  height: 100px;
+   height: 100px;
 }
 .container {
-  max-width: 100%;
-  flex: 1;
-  color: #ccc;
+   max-width: 100%;
+   flex: 1;
+   color: #ccc;
 }
 /* TlHeader styles */
 .navbar {
@@ -48,20 +48,20 @@
    padding-top: 12px;
 }
 .navbar .nav-right {
-  float: right;
+   float: right;
 }
 .nav-item {
-  margin-right: 10px;
-  margin-bottom: 2px;
+   margin-right: 10px;
+   margin-bottom: 2px;
 }
 img.logo {
    position: absolute;
-   top:0;
-   left:10px;
+   top: 0;
+   left: 10px;
    width: 170px;
 }
 .hidden {
-  display: none;
+   display: none;
 }
 .navbar a {
    background-color: #666;
@@ -72,7 +72,8 @@ img.logo {
    border-radius: 5px 5px 0 0;
    text-decoration: none;
 }
-.navbar div.nav-item a.active, .navbar div.nav-item:hover a{
+.navbar div.nav-item a.active,
+.navbar div.nav-item:hover a {
    background-color: #333333;
 }
 
@@ -87,430 +88,445 @@ img.logo {
 
 /* TlFooter styles */
 footer {
-  margin-top: 15px;
-  border-top: 1px solid #666;
-  text-align: center;
+   margin-top: 15px;
+   border-top: 1px solid #666;
+   text-align: center;
 }
 .copyright {
-  color:#666;
-  font-size: 0.7em;
+   color: #666;
+   font-size: 0.7em;
 }
 
-.Login, .Signup {
-  display: block;
-  width: 100%;
-  margin-top: 80px;
-
+.Login,
+.Signup {
+   display: block;
+   width: 100%;
+   margin-top: 80px;
 }
 .Login h3 {
-  font-size: 2em;
-  line-height: 2em;
+   font-size: 2em;
+   line-height: 2em;
 }
 .error {
-  color: red;
+   color: red;
 }
 
 /* Entry Page */
 .Entry {
-  margin-top: 80px;
+   margin-top: 80px;
 }
-button, select, input, textarea {
-  color: #333333;
+button,
+select,
+input,
+textarea {
+   color: #333333;
 }
 section {
-  margin-top: 10px;
-  clear: both;
+   margin-top: 10px;
+   clear: both;
 }
 
 #guideline {
-  width: 1px;
-  background-color: #0099ff;
-  height: 100%;
-  display: none;
-  z-index: 100;
-  position: absolute;
-  top: 100px;
+   width: 1px;
+   background-color: #0099ff;
+   height: 100%;
+   display: none;
+   z-index: 100;
+   position: absolute;
+   top: 100px;
 }
 #entryform {
-  display: inline-block ;
-  padding: 4px 4px 4px 10px;
-  width: 850px; ;
+   display: inline-block;
+   padding: 4px 4px 4px 10px;
+   width: 850px;
 }
 #entryform label {
-  width: 80px;
+   width: 80px;
 }
 
 #select-task {
-  width: 250px;
-  display: inline-block;
+   width: 250px;
+   display: inline-block;
 }
 .error-message {
-  color: red;
+   color: red;
 }
 
 .content-center {
-  padding: 40px 15px;
-  text-align: center;
+   padding: 40px 15px;
+   text-align: center;
 }
 .col-md-9 {
-  padding-left: 25px;
+   padding-left: 25px;
 }
 .btn {
-  height: 30px;
-  padding: 1px 8px;
+   height: 30px;
+   padding: 1px 8px;
 }
 div.entries {
-  width: 100%;
-  padding: 10px;
+   width: 100%;
+   padding: 10px;
 }
 table.entries {
-  width: 100% ;
-  border: 0;
+   width: 100%;
+   border: 0;
 }
 table.entries td.head300 {
-  width:300px;
+   width: 300px;
 }
 table.entries td.head40 {
-  width:40px;
+   width: 40px;
 }
 table.entries tr.tlrow {
-  border-bottom: 1px solid #666;
-   max-height:40px;
+   border-bottom: 1px solid #666;
+   max-height: 40px;
 }
 table.entries tr:first-child {
-  border-top: 1px solid #666;
-  min-height:10px;
-  max-height:10px;
+   border-top: 1px solid #666;
+   min-height: 10px;
+   max-height: 10px;
 }
 table.entries td {
-  padding: 0 4px 0 4px;
+   padding: 0 4px 0 4px;
 }
 table.entries td.timelineArea {
- padding: 0;
+   padding: 0;
 }
 div.startstop {
-  display: table-cell;
-  max-width: 42px;
-  padding: 4px;
+   display: table-cell;
+   max-width: 42px;
+   padding: 4px;
 }
-td.descedit, td.hidebtn  {
-  width: 38px;
+td.descedit,
+td.hidebtn {
+   width: 38px;
 }
 table.entries td.taskname {
-  width: 220px;
-  padding: 0;
-  height:39px;
+   width: 220px;
+   padding: 0;
+   height: 39px;
 }
 table.entries td.taskname div.visiblepart {
-  width: 220px;
-  padding: 0;
-  margin:0;
-  height:39px;
-  overflow:hidden;
+   width: 220px;
+   padding: 0;
+   margin: 0;
+   height: 39px;
+   overflow: hidden;
 }
 table.entries td.taskname div.visiblepart div.hide-overflow {
-  height:350%;
+   height: 350%;
 }
 button.showmanualform {
- margin-left: 20px;
- width: 150px;
+   margin-left: 20px;
+   width: 150px;
 }
 .entrypage {
-  margin-top: 12px;
-  margin-bottom: 12px;
+   margin-top: 12px;
+   margin-bottom: 12px;
 }
 .bottomaligned {
-  position: absolute;
-  bottom: 0;
-  margin-bottom: 7px;
-  left: 0;
+   position: absolute;
+   bottom: 0;
+   margin-bottom: 7px;
+   left: 0;
 }
 .selectRoles {
-  float: right;
+   float: right;
 }
 
 .right {
-  width: 100%;
-  text-align: right;
-  margin-top: 6px;
+   width: 100%;
+   text-align: right;
+   margin-top: 6px;
 }
 .alert-true {
-  background-color: #e66;
+   background-color: #e66;
 }
 .alert-false {
-  background-color: #6e6;
+   background-color: #6e6;
 }
-.controls span, .controls button {
-  margin-right: 7px; 
+.controls span,
+.controls button {
+   margin-right: 7px;
 }
 span.control {
-  width: 32px;
-  height: 32px;
-  cursor: pointer;
+   width: 32px;
+   height: 32px;
+   cursor: pointer;
 }
-#scrollTimeline .scrollableArea  .tlscale, td.tlscale {
-  height: 21px;
-  width: 100%;
-  padding: 0;
-  border-bottom: 1px solid #666;
+#scrollTimeline .scrollableArea .tlscale,
+td.tlscale {
+   height: 21px;
+   width: 100%;
+   padding: 0;
+   border-bottom: 1px solid #666;
 }
 #scrollTimeline .scrollableArea .tlbody {
-  background: #333333 url("/img/bgrow.png") repeat-y;
-  width: 100%;
-  display:block;
-  overflow:hidden;
+   background: #333333 url('/img/bgrow.png') repeat-y;
+   width: 100%;
+   display: block;
+   overflow: hidden;
 }
 
 #scrollTimeline {
- width: 1000px;
- position: relative;
- display:block;
- overflow:hidden;
- height: 100%;
+   width: 1000px;
+   position: relative;
+   display: block;
+   overflow: hidden;
+   height: 100%;
 }
 
 #scrollTimeline .scrollableArea {
- display:block;
- overflow:hidden;
+   display: block;
+   overflow: hidden;
 }
 
 #scrollTimeline .scrollingHotSpotLeft,
-#scrollTimeline .scrollingHotSpotRight  {
-  width: 50px;
+#scrollTimeline .scrollingHotSpotRight {
+   width: 50px;
 }
 #scrollTimeline .scrollableArea div.singletimeline {
-  width: 100%;
-  height: 43px;
-  border-bottom: 1px solid #666;
+   width: 100%;
+   height: 43px;
+   border-bottom: 1px solid #666;
 }
 
 #scrollTimeline .scrollableArea div.singletimeline img {
-  top: 13px;
-  height: 14px;
-  position: absolute;
+   top: 13px;
+   height: 14px;
+   position: absolute;
 }
 
 table.tmp {
-  border-top: 1px solid #666;
-  border-left: 1px solid #666;
+   border-top: 1px solid #666;
+   border-left: 1px solid #666;
 }
 table.tmp td {
-  padding: 3px;
-  border-bottom: 1px solid #666;
-  border-right: 1px solid #666;
+   padding: 3px;
+   border-bottom: 1px solid #666;
+   border-right: 1px solid #666;
 }
 .changeDate:hover {
-  cursor: pointer
+   cursor: pointer;
 }
 
 #scrollview {
-	overflow-x: scroll;
-	overflow-y: hidden;
-	background-color: #333;
+   overflow-x: scroll;
+   overflow-y: hidden;
+   background-color: #333;
 }
 #marginbox {
-    float: left;
-	  background-color: #333;
-    max-width: 20%; 
-    display: table; 
-    border-collapse: collapse
+   float: left;
+   background-color: #333;
+   max-width: 20%;
+   display: table;
+   border-collapse: collapse;
 }
 #scrollbox {
-	 width: 2400px;
-	 background-color: #333;
+   width: 2400px;
+   background-color: #333;
 }
-th, td {
-	padding: 4px;
+th,
+td {
+   padding: 4px;
 }
-.header, .footer {
-	height: 21px;
-	background-color: #333;
-	line-height: 17px;
+.header,
+.footer {
+   height: 21px;
+   background-color: #333;
+   line-height: 17px;
 }
-div.header, div.footer, div.tlbody3 {
-  display: table-row;
+div.header,
+div.footer,
+div.tlbody3 {
+   display: table-row;
 }
 div.tlbody3 {
-  height: 41px;
-  border: 1px solid #666; 
-	background-color: #333;
+   height: 41px;
+   border: 1px solid #666;
+   background-color: #333;
 }
 tr.header {
-  	 border-bottom: 1px solid #666;
+   border-bottom: 1px solid #666;
 }
 tr.footer {
-  	 border-top: 1px solid #666;
+   border-top: 1px solid #666;
 }
 div.tlbody {
-  display: table-cell;
-  width: 100%;
+   display: table-cell;
+   width: 100%;
 }
 tr.tlbody {
-	height: 41px;
-	background-color: #333;
-  border-bottom: 1px solid #666;
+   height: 41px;
+   background-color: #333;
+   border-bottom: 1px solid #666;
 }
 td.tlscale {
- width: 100%;
- padding: 0;
- border-bottom: 1px solid #666;
+   width: 100%;
+   padding: 0;
+   border-bottom: 1px solid #666;
 }
 td.tlscale img {
-	  width: 100%;
+   width: 100%;
 }
 .bar {
-	height: 12px;
-	top: 10px;
-	background-color: #0099ff;
+   height: 12px;
+   top: 10px;
+   background-color: #0099ff;
 }
 td.line {
-  padding: 4px 0;
-  height: 40px;
-   background: #333 url("/img/bgrow.png") no-repeat;
+   padding: 4px 0;
+   height: 40px;
+   background: #333 url('/img/bgrow.png') no-repeat;
    width: 100%;
    position: relative;
    display: block;
-   overflow:hidden;
+   overflow: hidden;
 }
 .LogForm {
-  display: flex;
-  background: rgba(33, 33, 33, 0.6);
+   display: flex;
+   background: rgba(33, 33, 33, 0.6);
 }
 .LogForm .modal-dialog {
-    top: -500px;
-    opacity: 0;
-    -webkit-animation: slide-in 0.3s forwards;
-    animation: slide-in 0.3s forwards;
+   top: -500px;
+   opacity: 0;
+   -webkit-animation: slide-in 0.3s forwards;
+   animation: slide-in 0.3s forwards;
 }
 
 @-webkit-keyframes slide-in {
- 100% { top: 0;
-        opacity: 1;
-       }
+   100% {
+      top: 0;
+      opacity: 1;
+   }
 }
 
 @keyframes slide-in {
- 100% { top: 0; 
-  opacity: 1;
+   100% {
+      top: 0;
+      opacity: 1;
+   }
 }
-}
-.LogForm .modal-content{
-  background-color: #333333;
-  color: #eee;
+.LogForm .modal-content {
+   background-color: #333333;
+   color: #eee;
 }
 
 .Taskform {
-  border: 1px solid #444;
-  background-color: #333;
-  z-index: 60;
-  padding: 7px;
-  position: absolute;
-  margin-top: -37px;
-  margin-left: 36px;
+   border: 1px solid #444;
+   background-color: #333;
+   z-index: 60;
+   padding: 7px;
+   position: absolute;
+   margin-top: -37px;
+   margin-left: 36px;
 }
 
 .Taskform button {
-  margin-left: 4px;
+   margin-left: 4px;
 }
 .Taskform input {
-  width: 230px;
-  color: #666;
+   width: 230px;
+   color: #666;
 }
 div.taskmenu {
-  max-width: 34px;
-  display: table-cell;
+   max-width: 34px;
+   display: table-cell;
 }
 div.taskdesc {
-  min-width: 120px;
-  max-width: 220px;
-  white-space: nowrap; 
-  overflow: hidden;
-  text-overflow: ellipsis; 
-  display: table-cell;
-  padding: 4px 5px;
+   min-width: 120px;
+   max-width: 220px;
+   white-space: nowrap;
+   overflow: hidden;
+   text-overflow: ellipsis;
+   display: table-cell;
+   padding: 4px 5px;
 }
 
 .react-contextmenu {
-  background-color: #fff;
-  background-clip: padding-box;
-  border: 1px solid rgba(0,0,0,.15);
-  border-radius: .25rem;
-  color: #373a3c;
-  font-size: 16px;
-  margin: 2px 0 0;
-  min-width: 160px;
-  outline: none;
-  opacity: 0;
-  padding: 5px 0;
-  pointer-events: none;
-  text-align: left;
-  transition: opacity 250ms ease !important;
+   background-color: #fff;
+   background-clip: padding-box;
+   border: 1px solid rgba(0, 0, 0, 0.15);
+   border-radius: 0.25rem;
+   color: #373a3c;
+   font-size: 16px;
+   margin: 2px 0 0;
+   min-width: 160px;
+   outline: none;
+   opacity: 0;
+   padding: 5px 0;
+   pointer-events: none;
+   text-align: left;
+   transition: opacity 250ms ease !important;
 }
 
 .react-contextmenu.react-contextmenu--visible {
-  opacity: 1;
-  pointer-events: auto;
-  z-index: 9999;
+   opacity: 1;
+   pointer-events: auto;
+   z-index: 9999;
 }
 
 .react-contextmenu-item {
-  background: 0 0;
-  border: 0;
-  color: #373a3c;
-cursor: pointer;
-  font-weight: 400;
-  line-height: 1.5;
-  padding: 3px 20px;
-  text-align: inherit;
-  white-space: nowrap;
+   background: 0 0;
+   border: 0;
+   color: #373a3c;
+   cursor: pointer;
+   font-weight: 400;
+   line-height: 1.5;
+   padding: 3px 20px;
+   text-align: inherit;
+   white-space: nowrap;
 }
 
 .react-contextmenu-item.react-contextmenu-item--active,
 .react-contextmenu-item.react-contextmenu-item--selected {
-  color: #fff;
-  background-color: #20a0ff;
-  border-color: #20a0ff;
-  text-decoration: none;
+   color: #fff;
+   background-color: #20a0ff;
+   border-color: #20a0ff;
+   text-decoration: none;
 }
 
 .react-contextmenu-item.react-contextmenu-item--disabled,
 .react-contextmenu-item.react-contextmenu-item--disabled:hover {
-  background-color: transparent;
-  border-color: rgba(0,0,0,.15);
-  color: #878a8c;
+   background-color: transparent;
+   border-color: rgba(0, 0, 0, 0.15);
+   color: #878a8c;
 }
 /* Summary page */
 table.summary {
-  width: 100%;
-  border-color: #999;
+   width: 100%;
+   border-color: #999;
 }
-.taskname, .details, .duration {
-  vertical-align: top;
-  padding: 4px;
+.taskname,
+.details,
+.duration {
+   vertical-align: top;
+   padding: 4px;
 }
 .taskname {
-  width: 40%;
+   width: 40%;
 }
 .details {
-  width: 45%;
+   width: 45%;
 }
 .duration {
-  width: 15%;
+   width: 15%;
 }
 .footer {
-  font-weight: bold;
-  padding: 4px;
+   font-weight: bold;
+   padding: 4px;
 }
 input {
-  color: #333333;
+   color: #333333;
 }
-.changeDate:hover, .del-button:hover {
-  cursor: pointer
+.changeDate:hover,
+.del-button:hover {
+   cursor: pointer;
 }
 .del-button {
-  line-height: 11px;
-  padding: 0 2px 1px 2px;
-  border: 1px solid #999;
-  margin-top: -2px;
-  margin-right: -2px;
+   line-height: 11px;
+   padding: 0 2px 1px 2px;
+   border: 1px solid #999;
+   margin-top: -2px;
+   margin-right: -2px;
 }
