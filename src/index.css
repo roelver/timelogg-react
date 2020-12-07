@@ -493,6 +493,9 @@ div.taskdesc {
    color: #878a8c;
 }
 /* Summary page */
+.Summary {
+   margin-top: 80px;
+}
 table.summary {
    width: 100%;
    border-color: #999;
