@@ -12,7 +12,7 @@ variables:
   azureSubscription: '0de28c2f-4021-4de5-a3a5-ee386e2268ef'
 
   # Web app name
-  webAppName: 'rtimelogg'
+  webAppName: 'mytimelogg'
   
   # Environment name
   environmentName: 'PRD'
