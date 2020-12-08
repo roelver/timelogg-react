@@ -12,10 +12,13 @@ variables:
   azureSubscription: '0de28c2f-4021-4de5-a3a5-ee386e2268ef'
 
   # Web app name
-  webAppName: ''
+  webAppName: 'rtimelogg'
   
   # Environment name
-  environmentName: ''
+  environmentName: 'PRD'
+
+  # MONGO env
+  MONGODB_URI: mongodb://timelogg:89ozmBLfg0TDkNU4Z8uE8ipGUBxTGNhc4ZYHQlu1KCJNzU0yGfoTQw3g601WXMTonCi0mEvuq26eul4xwhy07w%3D%3D@timelogg.mongo.cosmos.azure.com:10255/timelogg?ssl=true&appName=@timelogg@
 
   # Agent VM image name
   vmImageName: 'ubuntu-latest'
