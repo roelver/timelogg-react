@@ -71,4 +71,6 @@ stages:
               ScriptType: 'Inline Script'
               InlineScript: |
                 npm install
+                ls -l
+                cp fix/webpack.config.js node-modules/react-scripts/config
                 npm run build --if-present
