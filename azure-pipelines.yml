@@ -75,4 +75,4 @@ stages:
               WebAppName: $(webAppName)
               packageForLinux: '$(Pipeline.Workspace)/drop/$(Build.BuildId).zip'
               RuntimeStack: 'NODE|12-lts'
-              StartupCommand: 'pm2 serve /home/site/wwwroot --no-daemon --spa'
+              StartupCommand: 'npm run start'
