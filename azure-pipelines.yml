@@ -22,17 +22,25 @@ variables:
 
   # Agent VM image name
   vmImageName: 'ubuntu-latest'
+  System.debug: true
 
 stages:
 - stage: Build
   displayName: Build stage
+  pool:
+    vmImage: $(vmImageName)
   jobs:  
-  - job: Build
-    displayName: Build
-    pool:
-      vmImage: $(vmImageName)
-
+  - job: Build_Staging
+    displayName: Build Staging
     steps:
+    - script: |
+        echo 'Running npm install'
+        npm install
+        ls -l
+        echo 'Copy webpack fix'
+        cp fix/webpack.config.js node_modules/react-scripts/config
+        echo 'Running npm run build'
+        npm run build
     - task: ArchiveFiles@2
       displayName: 'Archive files'
       inputs:
@@ -67,12 +75,4 @@ stages:
               WebAppName: $(webAppName)
               packageForLinux: '$(Pipeline.Workspace)/drop/$(Build.BuildId).zip'
               RuntimeStack: 'NODE|12-lts'
-              StartupCommand: 'npm run start'
-              ScriptType: 'Inline Script'
-              InlineScript: |
-                echo 'Running npm install'
-                npm install
-                ls -l
-                cp fix/webpack.config.js node_modules/react-scripts/config
-                echo 'Running npm run build'
-                npm run build --if-present
+              StartupCommand: 'pm2 serve /home/site/wwwroot --no-daemon --spa'
