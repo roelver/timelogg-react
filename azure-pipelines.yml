@@ -72,7 +72,7 @@ stages:
               WebAppName: $(webAppName)
               packageForLinux: '$(Pipeline.Workspace)/drop/$(Build.BuildId).zip'
               RuntimeStack: 'NODE|12-lts'
-              StartupCommand: 'serve -s build'
+              StartupCommand: 'node_modules/.bin/serve -s build'
               ScriptType: 'Inline Script'
               InlineScript: |
                 echo 'Install Serve before execution'
