@@ -15,10 +15,7 @@ variables:
   webAppName: 'mytimelogg'
   
   # Environment name
-  environmentName: 'PRD'
-
-  # MONGO env
-  MONGODB_URI: mongodb://timelogg:89ozmBLfg0TDkNU4Z8uE8ipGUBxTGNhc4ZYHQlu1KCJNzU0yGfoTQw3g601WXMTonCi0mEvuq26eul4xwhy07w%3D%3D@timelogg.mongo.cosmos.azure.com:10255/timelogg?ssl=true&appName=@timelogg@
+  environmentName: 'production'
 
   # Agent VM image name
   vmImageName: 'ubuntu-latest'
@@ -78,4 +75,5 @@ stages:
               StartupCommand: 'serve -s build'
               ScriptType: 'Inline Script'
               InlineScript: |
-                npm install -g serve
+                echo 'Install Serve before execution'
+                npm install serve
