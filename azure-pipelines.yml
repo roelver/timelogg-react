@@ -70,7 +70,9 @@ stages:
               StartupCommand: 'npm run start'
               ScriptType: 'Inline Script'
               InlineScript: |
+                echo 'Running npm install'
                 npm install
                 ls -l
-                cp fix/webpack.config.js node-modules/react-scripts/config
+                cp fix/webpack.config.js node_modules/react-scripts/config
+                echo 'Running npm run build'
                 npm run build --if-present
