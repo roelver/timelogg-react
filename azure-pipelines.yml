@@ -34,9 +34,8 @@ stages:
         cp fix/webpack.config.js node_modules/react-scripts/config
         echo 'Running npm run build'
         npm run build
-        echo 'Copy package.json'
-        cp package.json server
-        ls -l
+        echo 'Build completed'
+        ls -l server
     - task: ArchiveFiles@2
       displayName: 'Archive files'
       inputs:
