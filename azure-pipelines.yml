@@ -14,12 +14,9 @@ variables:
   # Web app name
   webAppName: 'mytimelogg'
   
-  # Environment name
-  environmentName: 'production'
-
   # Agent VM image name
   vmImageName: 'ubuntu-latest'
-  System.debug: true
+  # System.debug: true
 
 stages:
 - stage: Build
@@ -33,15 +30,17 @@ stages:
     - script: |
         echo 'Running npm install'
         npm install
-        ls -l
         echo 'Copy webpack fix'
         cp fix/webpack.config.js node_modules/react-scripts/config
         echo 'Running npm run build'
         npm run build
+        echo 'Copy package.json'
+        cp package.json server
+        ls -l
     - task: ArchiveFiles@2
       displayName: 'Archive files'
       inputs:
-        rootFolderOrFile: '$(System.DefaultWorkingDirectory)/build'
+        rootFolderOrFile: '$(System.DefaultWorkingDirectory)/server'
         includeRootFolder: false
         archiveType: zip
         archiveFile: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
@@ -72,8 +71,4 @@ stages:
               WebAppName: $(webAppName)
               packageForLinux: '$(Pipeline.Workspace)/drop/$(Build.BuildId).zip'
               RuntimeStack: 'NODE|12-lts'
-              StartupCommand: 'node_modules/.bin/serve -s build'
-              ScriptType: 'Inline Script'
-              InlineScript: |
-                echo 'Install Serve before execution'
-                npm install serve
+              StartupCommand: 'npm run start'
