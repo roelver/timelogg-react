@@ -1,62 +1,64 @@
 {
-  "name": "timelogg-react",
-  "version": "1.0.0",
-  "description": "A simple Time Registration tool with Node / React",
-  "main": "index.js",
-  "scripts": {
-    "server": "node src/server/server.js",
-    "dev-server": "nodemon src/server/server.js",
-    "dev": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "start": "npm run server"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/roelver/timelogg-react.git"
-  },
-  "author": "Roel Verbunt",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/roelver/timelogg-react/issues"
-  },
-  "homepage": "https://rtimelogg.herokuapp.com",
-  "dependencies": {
-    "axios": "^0.21.0",
-    "bcryptjs": "^2.4.3",
-    "concurrently": "^5.3.0",
-    "express": "^4.17.1",
-    "jsonwebtoken": "^8.5.1",
-    "moment": "^2.29.1",
-    "mongodb": "^3.6.3",
-    "mongoose": "^5.11.4",
-    "react": "^17.0.1",
-    "react-bootstrap": "^1.4.0",
-    "react-contextmenu": "^2.14.0",
-    "react-dom": "^17.0.1",
-    "react-rnd": "^10.2.4",
-    "react-router": "^5.2.0",
-    "react-router-dom": "^5.2.0",
-    "react-scripts": "4.0.1",
-    "validator": "^13.5.1"
-  },
-  "devDependencies": {
-    "nodemon": "^2.0.6"
-  },
-  "eslintConfig": {
-    "extends": "react-app"
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  }
+   "name": "timelogg-react",
+   "version": "1.0.0",
+   "description": "A simple Time Registration tool with Node / React",
+   "main": "index.js",
+   "scripts": {
+      "server": "node server/server.js",
+      "dev-server": "nodemon server/server.js",
+      "dev": "react-scripts start",
+      "build": "react-scripts build && rm -rf server/build && mv build server",
+      "test": "react-scripts test",
+      "eject": "react-scripts eject",
+      "start": "concurrently \"react-scripts start\" \"nodemon server/server.js\""
+   },
+   "proxy": "http://localhost:3001",
+   "repository": {
+      "type": "git",
+      "url": "git+https://github.com/roelver/timelogg-react.git"
+   },
+   "author": "Roel Verbunt",
+   "license": "ISC",
+   "bugs": {
+      "url": "https://github.com/roelver/timelogg-react/issues"
+   },
+   "homepage": "https://rtimelogg.herokuapp.com",
+   "dependencies": {
+      "axios": "^0.21.0",
+      "bcryptjs": "^2.4.3",
+      "concurrently": "^5.3.0",
+      "express": "^4.17.1",
+      "jsonwebtoken": "^8.5.1",
+      "moment": "^2.29.1",
+      "mongodb": "^3.6.3",
+      "mongoose": "^5.11.4",
+      "react": "^17.0.1",
+      "react-bootstrap": "^1.4.0",
+      "react-contextmenu": "^2.14.0",
+      "react-dom": "^17.0.1",
+      "react-rnd": "^10.2.4",
+      "react-router": "^5.2.0",
+      "react-router-dom": "^5.2.0",
+      "react-scripts": "4.0.1",
+      "serve": "^11.3.2",
+      "validator": "^13.5.1"
+   },
+   "devDependencies": {
+      "nodemon": "^2.0.6"
+   },
+   "eslintConfig": {
+      "extends": "react-app"
+   },
+   "browserslist": {
+      "production": [
+         ">0.2%",
+         "not dead",
+         "not op_mini all"
+      ],
+      "development": [
+         "last 1 chrome version",
+         "last 1 firefox version",
+         "last 1 safari version"
+      ]
+   }
 }

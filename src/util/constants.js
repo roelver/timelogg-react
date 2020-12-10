@@ -17,4 +17,7 @@ export const START_RUNNING = '#START_RUNNING';
 export const STOP_RUNNING = '#STOP_RUNNING';
 
 // API_URL must be empty on Heroku. When running on dev (localhost) the API runs on port 3000
-export const API_URL = window.location.hostname.indexOf('localhost') >= 0 ? 'http://localhost:3000' : '';
+export const API_URL =
+   window.location.hostname.indexOf('localhost') >= 0
+      ? 'http://localhost:3001'
+      : '';

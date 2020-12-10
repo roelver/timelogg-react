@@ -8,7 +8,7 @@ const tasklistRouter = require('./routers/tasklist');
 
 const app = express();
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 3001;
 
 // define middleware method
 app.use((req, res, next) => {
@@ -30,12 +30,13 @@ app.use((req, res, next) => {
 });
 //production mode: host React app from here
 if (process.env.NODE_ENV === 'production') {
-   app.use(express.static('build'));
-   app.use('/entry', express.static('build', { index: 'index.html' }));
-   app.use('/summary', express.static('build', { index: 'index.html' }));
-   app.use('/login', express.static('build', { index: 'index.html' }));
-   app.use('/signup', express.static('build', { index: 'index.html' }));
-   app.use('/about', express.static('build', { index: 'index.html' }));
+   console.log('Running in production!');
+   app.use(express.static('server/build'));
+   app.use('/entry', express.static('server/build', { index: 'index.html' }));
+   app.use('/summary', express.static('server/build', { index: 'index.html' }));
+   app.use('/login', express.static('server/build', { index: 'index.html' }));
+   app.use('/signup', express.static('server/build', { index: 'index.html' }));
+   app.use('/about', express.static('server/build', { index: 'index.html' }));
 }
 
 app.use(express.json());
