@@ -16,7 +16,7 @@ variables:
   
   # Agent VM image name
   vmImageName: 'ubuntu-latest'
-  System.debug: true
+  # System.debug: true
 
 stages:
 - stage: Build
@@ -30,15 +30,17 @@ stages:
     - script: |
         echo 'Running npm install'
         npm install
-        ls -l
         echo 'Copy webpack fix'
         cp fix/webpack.config.js node_modules/react-scripts/config
         echo 'Running npm run build'
         npm run build
+        echo 'Copy package.json'
+        cp package.json server
+        ls -l
     - task: ArchiveFiles@2
       displayName: 'Archive files'
       inputs:
-        rootFolderOrFile: '$(System.DefaultWorkingDirectory)'
+        rootFolderOrFile: '$(System.DefaultWorkingDirectory)/server'
         includeRootFolder: false
         archiveType: zip
         archiveFile: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
